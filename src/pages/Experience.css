@@ -1,0 +1,537 @@
+/* =====================================================
+   TIMELINE — Zigzag alternating layout (desktop)
+   ===================================================== */
+
+.timeline {
+  position: relative;
+  max-width: 960px;
+  margin: 0 auto 0;
+  padding: 0 24px;
+}
+
+/* Center vertical line */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    var(--accent-emerald),
+    var(--accent-blue),
+    var(--accent-purple)
+  );
+  opacity: 0.35;
+}
+
+/* ── Each timeline item: alternates left / right ── */
+.timeline-item {
+  position: relative;
+  width: 48%;
+  padding-bottom: 48px;
+}
+
+.timeline-item--left {
+  align-self: flex-start;
+  margin-right: auto;
+  padding-right: 40px;
+}
+
+.timeline-item--right {
+  align-self: flex-end;
+  margin-left: auto;
+  padding-left: 40px;
+}
+
+/* Center dot sits on the center line */
+.timeline-dot {
+  position: absolute;
+  top: 22px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.timeline-item--left .timeline-dot {
+  right: -15px;
+}
+
+.timeline-item--right .timeline-dot {
+  left: -15px;
+}
+
+.timeline-dot__inner {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.75rem;
+  box-shadow: 0 0 0 4px var(--bg-primary), 0 0 16px rgba(0,0,0,0.2);
+}
+
+.timeline-dot__inner--emerald { background: var(--accent-emerald); }
+.timeline-dot__inner--blue    { background: var(--accent-blue); }
+.timeline-dot__inner--purple  { background: var(--accent-purple); }
+
+/* ── Card ── */
+.timeline-card {
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all var(--transition);
+}
+
+.timeline-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+
+/* Photo banner */
+.timeline-card__img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+}
+
+.timeline-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  transition: transform 0.45s ease;
+}
+
+.timeline-card:hover .timeline-card__img {
+  transform: scale(1.04);
+}
+
+.timeline-card__img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, var(--bg-card) 100%);
+}
+
+/* Card body */
+.timeline-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 20px 20px 0;
+}
+
+.timeline-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.timeline-card__duration {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.timeline-card__chevron {
+  color: var(--text-muted);
+  transition: transform var(--transition);
+  flex-shrink: 0;
+}
+.timeline-card__chevron--open { transform: rotate(180deg); }
+
+.timeline-card__position {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  padding: 0 20px;
+}
+
+.timeline-card__org {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--accent-emerald);
+  margin-bottom: 4px;
+  padding: 0 20px;
+}
+
+.timeline-card__location {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 20px 20px;
+}
+
+.timeline-card__details {
+  overflow: hidden;
+  padding: 0 20px 20px;
+  margin-top: 0;
+  border-top: 1px solid var(--border-color);
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.timeline-card__description {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin: 0;
+}
+
+.timeline-card__section h4 {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+
+.timeline-card__section ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.timeline-card__section ul li {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  padding-left: 14px;
+  position: relative;
+}
+
+.timeline-card__section ul li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--accent-emerald);
+}
+
+.timeline-card__achievements li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding-left: 0 !important;
+}
+.timeline-card__achievements li::before { display: none !important; }
+
+.timeline-achievement-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-blue);
+  flex-shrink: 0;
+  margin-top: 7px;
+}
+/* =====================================================
+   CERTIFICATIONS
+   ===================================================== */
+
+.experience__certs {
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+}
+
+/* =====================================================
+   EDUCATION
+   ===================================================== */
+
+.experience__education {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+}
+
+.certs-filters {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.certs__search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+.certs__search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+.certs__search { padding-left: 40px !important; }
+
+.certs-cats {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Cards grid — reuses Certifications page classes */
+.certs-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  margin-bottom: 56px;
+}
+
+.cert-page-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.cert-page-card__img-wrap {
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+}
+.cert-page-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.cert-page-card:hover .cert-page-card__img { transform: scale(1.06); }
+.cert-page-card__cat {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.cert-page-card__body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.cert-page-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cert-page-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--accent-emerald) 12%, transparent);
+  color: var(--accent-emerald);
+}
+
+.cert-page-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent-blue);
+  background: color-mix(in srgb, var(--accent-blue) 10%, transparent);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+}
+
+.cert-page-card__title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+.cert-page-card__issuer {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.cert-page-card__meta {
+  display: flex;
+  gap: 10px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.cert-page-card__verify {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-emerald);
+  text-decoration: none;
+  margin-top: 4px;
+  width: fit-content;
+  transition: opacity var(--transition);
+}
+.cert-page-card__verify:hover { opacity: 0.75; }
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+/* Tablet: single column timeline, no zigzag */
+@media (max-width: 860px) {
+  .timeline::before {
+    left: 18px;
+    transform: none;
+  }
+
+  .timeline-item {
+    width: 100%;
+    padding-left: 52px !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .timeline-dot {
+    left: 3px !important;
+    right: auto !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .certs-page__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .cert-page-card__img-wrap { height: 110px; }
+  .cert-page-card__body { padding: 12px; }
+  .cert-page-card__title { font-size: 0.8rem; }
+}
+
+@media (max-width: 380px) {
+  .certs-page__grid { grid-template-columns: 1fr; }
+}
+/* =====================================================
+   MASTER OF CEREMONIES (MC)
+   ===================================================== */
+
+.experience__mc {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+}
+
+.mc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.mc-card {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.mc-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--accent-blue) 0%, var(--accent-purple) 100%);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.mc-card:hover::before {
+  opacity: 1;
+}
+
+.mc-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+  border-color: color-mix(in srgb, var(--accent-blue) 25%, var(--border-color));
+}
+
+.mc-card__icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--accent-blue) 10%, transparent);
+  color: var(--accent-blue);
+  flex-shrink: 0;
+}
+
+.mc-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.mc-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mc-card__subtitle {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-left: auto;
+  text-align: right;
+}
+
+.mc-card__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.mc-card__description {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .mc-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+

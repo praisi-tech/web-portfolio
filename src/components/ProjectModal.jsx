@@ -1,0 +1,102 @@
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, Github, ExternalLink, Eye, FileText } from 'lucide-react';
+import './ProjectModal.css';
+
+export default function ProjectModal({ project, onClose }) {
+  if (!project) return null;
+
+  const handlePdfPreview = () => {
+    const encoded = encodeURIComponent(project.pdf);
+    window.open(`${window.location.origin}/pdfs/${encoded}`, '_blank');
+  };
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="modal-overlay"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      >
+        <motion.div
+          className="modal-panel"
+          initial={{ opacity: 0, y: 48, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 48, scale: 0.95 }}
+          transition={{ type: 'spring', stiffness: 280, damping: 28 }}
+          onClick={e => e.stopPropagation()}
+        >
+          {/* Hero Image */}
+          {project.thumbnail && (
+            <div className="modal-hero" style={{ cursor: 'zoom-in' }} onClick={() => window.open(project.thumbnail, '_blank')} title="Click to view full image">
+              <img src={project.thumbnail} alt={project.name} className="modal-hero-img" />
+            </div>
+          )}
+
+          {/* Header */}
+          <div className="modal-header">
+            <div>
+              <h2 className="modal-title">{project.name}</h2>
+              <p className="modal-tagline">{project.tagline}</p>
+            </div>
+            <button id="modal-close" className="modal-close" onClick={onClose}>
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="modal-body">
+            {/* Description */}
+            <p className="modal-description">{project.description}</p>
+
+            {/* Tech Stack */}
+            <section className="modal-section">
+              <h3 className="modal-section-title">🛠 Technology Stack</h3>
+              <div className="modal-tags">
+                {project.tech.map(t => (
+                  <span key={t} className="modal-tech-tag">{t}</span>
+                ))}
+              </div>
+            </section>
+
+            {/* Links */}
+            <div className="modal-links">
+              {project.github && (
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="modal-link-btn modal-link-btn--github"
+                >
+                  <Github size={16} />
+                  GitHub
+                </a>
+              )}
+              {project.demo && (
+                <a
+                  href={project.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="modal-link-btn modal-link-btn--live"
+                >
+                  <ExternalLink size={16} />
+                  Live Site
+                </a>
+              )}
+              {project.pdf && (
+                <button
+                  className="modal-link-btn modal-link-btn--pdf"
+                  onClick={handlePdfPreview}
+                >
+                  <Eye size={16} />
+                  Preview PDF
+                  <FileText size={13} style={{ opacity: 0.6 }} />
+                </button>
+              )}
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
