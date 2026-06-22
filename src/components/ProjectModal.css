@@ -9,6 +9,9 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
+  /* Ensure overlay itself doesn't scroll */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ─── Panel ───────────────────────────────────────── */
@@ -18,8 +21,15 @@
   border-radius: var(--radius-xl);
   width: 100%;
   max-width: 700px;
-  overflow: hidden;
+  /* Constrain height so modal never exceeds viewport */
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.04);
+  /* Ensure scrollbar is inside panel */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
 }
 
 /* ─── Hero Image ──────────────────────────────────── */
@@ -222,7 +232,15 @@
 
 /* ─── Responsive ──────────────────────────────────── */
 @media (max-width: 640px) {
-  .modal-overlay { padding: 12px; }
+  /* On mobile: pin panel to near top so header is immediately visible */
+  .modal-overlay {
+    align-items: flex-start;
+    padding: 12px 12px 24px;
+  }
+  .modal-panel {
+    max-height: calc(100dvh - 36px);
+    border-radius: var(--radius-lg);
+  }
   .modal-hero { height: 210px; }
   .modal-header { padding: 18px 18px 0; }
   .modal-body { padding: 16px 18px 22px; gap: 16px; }

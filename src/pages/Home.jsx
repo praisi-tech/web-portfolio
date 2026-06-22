@@ -89,7 +89,7 @@ export default function Home() {
 
             <motion.div variants={itemVariants} className="hero__subtitle">
               <span className="hero__subtitle-text">{displayed}</span>
-              <span className="hero__cursor animate-blink">|</span>
+              <span className={`hero__cursor${!typing && displayed.length === subtitles[subtitleIdx].length ? ' animate-blink' : ''}`}>|</span>
             </motion.div>
 
             <motion.p variants={itemVariants} className="hero__desc">
