@@ -249,33 +249,78 @@
   color: var(--accent-emerald);
 }
 
-/* ── Responsive ── */
+/* ══════════════════════════════════════════
+   RESPONSIVE — About Page
+   ══════════════════════════════════════════ */
+
+/* Tablet: collapse side-by-side, portrait centers */
 @media (max-width: 960px) {
   .about__hero {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 36px;
+    margin-bottom: 48px;
+    text-align: center;
   }
   .about__portrait-wrap {
     display: flex;
     justify-content: center;
   }
-  .about__portrait { width: 220px; height: 260px; }
+  .about__portrait { width: 200px; height: 240px; }
+  .about__meta-row { justify-content: center; }
   .about__stats-row { grid-template-columns: repeat(4, 1fr); }
+  .about__intro { padding-top: 0; }
 }
 
+/* Mobile */
 @media (max-width: 600px) {
-  .about__hero { gap: 28px; }
-  .about__portrait { width: 180px; height: 216px; }
-  .about__stats-row { grid-template-columns: repeat(2, 1fr); }
-  .about__hero-title { font-size: 1.8rem; }
-  .about__meta-row { gap: 10px; }
+  .about__hero {
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .about__portrait { width: 160px; height: 192px; }
+  .about__portrait-ring { inset: -8px; }
+  .about__portrait-badge {
+    font-size: 0.72rem;
+    padding: 5px 12px;
+  }
+  .about__hero-title { font-size: 1.75rem; }
+  .about__meta-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .about__tagline { font-size: 0.95rem; }
+  .about__body-text { font-size: 0.875rem; }
+
+  /* Stats: 2 columns on small mobile */
+  .about__stats-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+  .about__stat { padding: 18px 12px; }
+  .about__stat-value { font-size: 1.8rem; }
+
+  /* Marquee smaller */
   .marquee-item {
-    padding: 10px 18px;
-    font-size: 0.85rem;
+    padding: 9px 14px;
+    font-size: 0.82rem;
     gap: 8px;
   }
   .marquee-item__icon {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
   }
+  .about__skills-section { padding: 24px 0; }
+  .marquee-container { gap: 14px; }
+
+  /* Reduce mask gradient on small screens */
+  .marquee-container::before,
+  .marquee-container::after { width: 40px; }
+}
+
+/* Extra small */
+@media (max-width: 380px) {
+  .about__stats-row { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .about__portrait { width: 140px; height: 168px; }
 }
