@@ -101,9 +101,9 @@ function Challenge1({ done }) {
 
 /* ─── Challenge 2: OSINT ─── */
 const osintQuestions = [
-  { q: 'What organization shaped Praisilia\'s leadership journey?', answer: 'aiesec', placeholder: 'e.g. red cross' },
-  { q: 'What agricultural export platform concept is Praisilia building?', answer: 'tana minahasa', placeholder: 'e.g. smart farming' },
-  { q: 'What field of study is Praisilia pursuing?', answer: 'information technology', placeholder: 'e.g. computer science' },
+  { q: 'What organization shaped Praisilia\'s leadership journey?', answer: 'aiesec', placeholder: 'red cross' },
+  { q: 'What agricultural export platform concept is Praisilia building?', answer: 'tana minahasa', placeholder: 'smart farming' },
+  { q: 'What field of study is Praisilia pursuing?', answer: 'information technology', placeholder: 'computer science' },
 ];
 
 function Challenge2({ done }) {
@@ -167,14 +167,14 @@ const secPhases = [
     scenario: 'Multiple failed login attempts are detected from the same IP address before a successful authentication occurs.',
     question: 'What attack technique was used?',
     answer: 'brute force',
-    placeholder: 'e.g. port scanning',
+    placeholder: 'port scanning',
   },
   {
     title: 'Phase 2 — Secure Code Review',
     scenario: 'A SQL query is discovered: SELECT * FROM users WHERE username = \'$user_parameter_input\'',
     question: 'What security vulnerability exists?',
     answer: 'sql injection',
-    placeholder: 'e.g. cross site scripting',
+    placeholder: 'cross site scripting',
   },
 ];
 
@@ -240,7 +240,7 @@ function Challenge3({ done }) {
               <div className="log-snippet__header">LOG STREAM DETECTED: /var/log/auth.log</div>
               <pre className="log-snippet__body">
                 <code>
-{`2026-06-20 02:10:01 [WARN] Failed login: user='admin' src_ip=192.168.1.144
+                  {`2026-06-20 02:10:01 [WARN] Failed login: user='admin' src_ip=192.168.1.144
 2026-06-20 02:10:03 [WARN] Failed login: user='administrator' src_ip=192.168.1.144
 2026-06-20 02:10:05 [WARN] Failed login: user='root' src_ip=192.168.1.144
 2026-06-20 02:10:07 [WARN] Failed login: user='guest' src_ip=192.168.1.144
@@ -344,11 +344,10 @@ export default function HackThePortfolio() {
   const [openChallenge, setOpenChallenge] = useState(null);
 
   const challenges = [
-    { id: 1, key: 'flag1', title: 'Challenge #1 — Source Code Inspection', desc: 'Examine the page source to find a hidden developer comment.', category: 'Web Recon', Component: Challenge1 },
-    { id: 2, key: 'flag2', title: 'Challenge #2 — Open Source Intelligence (OSINT)', desc: 'Gather intelligence from the portfolio to answer investigative questions.', category: 'OSINT', Component: Challenge2 },
-    { id: 3, key: 'flag3', title: 'Challenge #3 — Security Consultant Simulation', desc: 'Complete a 4-phase security audit for a fictional organization.', category: 'Security Simulation', Component: Challenge3 },
+    { id: 1, key: 'flag1', title: 'Challenge #1 Source Code Inspection', desc: 'Examine the page source to find a hidden developer comment.', category: 'Web Recon', Component: Challenge1 },
+    { id: 2, key: 'flag2', title: 'Challenge #2 Open Source Intelligence (OSINT)', desc: 'Gather intelligence from the portfolio to answer investigative questions.', category: 'OSINT', Component: Challenge2 },
+    { id: 3, key: 'flag3', title: 'Challenge #3 Security Consultant Simulation', desc: 'Complete a 4-phase security audit for a fictional organization.', category: 'Security Simulation', Component: Challenge3 },
   ];
-
   return (
     <div className="page-wrapper">
       <section className="section hack">
@@ -412,7 +411,7 @@ export default function HackThePortfolio() {
           {/* Challenge overview */}
           <motion.div className="hack-overview card" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
             <h2 className="hack-overview__title">Security Challenge Documentation</h2>
-            <p className="hack-overview__desc">The Security Challenge is an interactive Capture The Flag (CTF) experience embedded within this portfolio. It simulates real-world cybersecurity thinking — web security analysis, OSINT, and security consulting. Discover and submit all 3 flags to unlock exclusive content and a completion certificate.</p>
+            <p className="hack-overview__desc">The Security Challenge is an interactive Capture The Flag (CTF) experience embedded within this portfolio. It simulates real-world cybersecurity thinking such as web security analysis, OSINT, and security consulting. Discover and submit all 3 flags to unlock exclusive content and a completion certificate.</p>
           </motion.div>
 
           {/* Challenges */}
