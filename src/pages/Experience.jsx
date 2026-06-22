@@ -171,7 +171,7 @@ export default function Experience() {
               Certifications & <span className="gradient-text">Badges</span>
             </h2>
             <p className="section-subtitle">
-              Verified professional credentials across cybersecurity, cloud, and leadership.
+              Verified professional credentials across software engineer, cybersecurity and leadership.
             </p>
           </motion.div>
 
