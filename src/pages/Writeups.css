@@ -32,8 +32,10 @@
   transition: transform var(--transition);
 }
 
-.writeup-card:hover .writeup-card__img {
-  transform: scale(1.05);
+@media (hover: hover) {
+  .writeup-card:hover .writeup-card__img {
+    transform: scale(1.05);
+  }
 }
 
 .writeup-card__img-overlay {

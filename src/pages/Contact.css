@@ -121,19 +121,22 @@
   transition: all var(--transition);
 }
 
-.contact-channel--emerald:hover {
-  border-color: color-mix(in srgb, var(--accent-emerald) 40%, transparent);
-  box-shadow: 0 4px 20px color-mix(in srgb, var(--accent-emerald) 12%, transparent);
-}
-
-.contact-channel--blue:hover {
-  border-color: color-mix(in srgb, var(--accent-blue) 40%, transparent);
-  box-shadow: 0 4px 20px color-mix(in srgb, var(--accent-blue) 12%, transparent);
-}
-
-.contact-channel--purple:hover {
-  border-color: color-mix(in srgb, var(--accent-purple) 40%, transparent);
-  box-shadow: 0 4px 20px color-mix(in srgb, var(--accent-purple) 12%, transparent);
+@media (hover: hover) {
+  .contact-channel:hover {
+    transform: translate(4px, -4px);
+  }
+  .contact-channel--emerald:hover {
+    border-color: color-mix(in srgb, var(--accent-emerald) 40%, transparent);
+    box-shadow: 0 4px 20px color-mix(in srgb, var(--accent-emerald) 12%, transparent);
+  }
+  .contact-channel--blue:hover {
+    border-color: color-mix(in srgb, var(--accent-blue) 40%, transparent);
+    box-shadow: 0 4px 20px color-mix(in srgb, var(--accent-blue) 12%, transparent);
+  }
+  .contact-channel--purple:hover {
+    border-color: color-mix(in srgb, var(--accent-purple) 40%, transparent);
+    box-shadow: 0 4px 20px color-mix(in srgb, var(--accent-purple) 12%, transparent);
+  }
 }
 
 .contact-channel__icon {
@@ -196,9 +199,11 @@
   flex-shrink: 0;
 }
 
-.contact-channel:hover .contact-channel__arrow {
-  color: var(--text-primary);
-  transform: translate(2px, -2px);
+@media (hover: hover) {
+  .contact-channel:hover .contact-channel__arrow {
+    color: var(--text-primary);
+    transform: translate(2px, -2px);
+  }
 }
 
 .contact__footer {

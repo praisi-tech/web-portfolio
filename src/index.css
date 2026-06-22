@@ -215,10 +215,6 @@ h1, h2, h3, h4, h5, h6 {
   color: #fff;
   box-shadow: var(--shadow-glow);
 }
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(226,91,139,0.35);
-}
 
 .btn-secondary {
   background: var(--bg-glass);
@@ -227,20 +223,27 @@ h1, h2, h3, h4, h5, h6 {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
-.btn-secondary:hover {
-  background: var(--bg-card);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
 
 .btn-ghost {
   background: transparent;
   color: var(--accent-emerald);
   border: 1px solid var(--accent-emerald);
 }
-.btn-ghost:hover {
-  background: color-mix(in srgb, var(--accent-emerald) 10%, transparent);
-  transform: translateY(-2px);
+
+@media (hover: hover) {
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(226,91,139,0.35);
+  }
+  .btn-secondary:hover {
+    background: var(--bg-card);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .btn-ghost:hover {
+    background: color-mix(in srgb, var(--accent-emerald) 10%, transparent);
+    transform: translateY(-2px);
+  }
 }
 
 .btn-sm {
@@ -259,14 +262,19 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   backdrop-filter: blur(16px);
-  transition: all var(--transition);
+  transition: background-color var(--transition), border-color var(--transition), box-shadow var(--transition);
   overflow: hidden;
 }
 
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--border-strong);
+@media (hover: hover) {
+  .card {
+    transition: transform var(--transition), background-color var(--transition), border-color var(--transition), box-shadow var(--transition);
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--border-strong);
+  }
 }
 
 /* ---------- Glass Panel ---------- */

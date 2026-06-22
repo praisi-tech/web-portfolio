@@ -83,9 +83,11 @@
   transition: transform var(--transition-slow);
 }
 
-.project-card:hover .project-card__img-bg,
-.project-card:hover .project-card__thumb {
-  transform: scale(1.05);
+@media (hover: hover) {
+  .project-card:hover .project-card__img-bg,
+  .project-card:hover .project-card__thumb {
+    transform: scale(1.05);
+  }
 }
 
 .project-card__thumb {
@@ -185,8 +187,10 @@
   transition: opacity 0.2s ease;
 }
 
-.project-card:hover .project-card__view-hint {
-  opacity: 1;
+@media (hover: hover) {
+  .project-card:hover .project-card__view-hint {
+    opacity: 1;
+  }
 }
 
 .project-card__links {
@@ -208,11 +212,13 @@
   transition: all var(--transition);
 }
 
-.project-card__link-icon:hover {
-  border-color: var(--accent-emerald);
-  color: var(--accent-emerald);
-  transform: scale(1.08);
-  background: color-mix(in srgb, var(--accent-emerald) 8%, transparent);
+@media (hover: hover) {
+  .project-card__link-icon:hover {
+    border-color: var(--accent-emerald);
+    color: var(--accent-emerald);
+    transform: scale(1.08);
+    background: color-mix(in srgb, var(--accent-emerald) 8%, transparent);
+  }
 }
 
 .project-card__pdf-btn {
@@ -230,10 +236,12 @@
   transition: all 0.2s ease;
   font-family: var(--font-body);
 }
-.project-card__pdf-btn:hover {
-  background: rgba(249, 115, 22, 0.18);
-  border-color: rgba(249, 115, 22, 0.55);
-  transform: translateY(-1px);
+@media (hover: hover) {
+  .project-card__pdf-btn:hover {
+    background: rgba(249, 115, 22, 0.18);
+    border-color: rgba(249, 115, 22, 0.55);
+    transform: translateY(-1px);
+  }
 }
 
 .projects__empty {

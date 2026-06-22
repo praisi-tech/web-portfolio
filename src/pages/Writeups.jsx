@@ -97,7 +97,6 @@ export default function Writeups() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                whileHover={{ y: -4 }}
                 onClick={() => setSelected(w)}
               >
                 {w.image && (

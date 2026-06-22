@@ -119,7 +119,6 @@ export default function Contact() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  whileHover={{ y: -4, x: 4 }}
                 >
                   <div className={`contact-channel__icon contact-channel__icon--${c.color}`}>
                     {c.icon}

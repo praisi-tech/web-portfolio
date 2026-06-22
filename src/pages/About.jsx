@@ -196,8 +196,6 @@ export default function About() {
                 key={i}
                 className="about__stat card"
                 variants={fadeUp}
-                whileHover={{ scale: 1.04, y: -4 }}
-                transition={{ type: 'spring', stiffness: 300 }}
               >
                 <span className="about__stat-value gradient-text">{s.value}</span>
                 <span className="about__stat-label">{s.label}</span>

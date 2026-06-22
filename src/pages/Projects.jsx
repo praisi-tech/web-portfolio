@@ -60,7 +60,6 @@ export default function Projects() {
                   whileInView="visible"
                   viewport={{ once: true, margin: "-50px" }}
                   exit={{ opacity: 0, scale: 0.95 }}
-                  whileHover={{ y: -6 }}
                   onClick={() => setSelectedProject(project)}
                   style={{ cursor: 'pointer' }}
                 >

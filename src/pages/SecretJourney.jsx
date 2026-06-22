@@ -94,7 +94,6 @@ export default function SecretJourney() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 + i * 0.08 }}
-                  whileHover={{ y: -4 }}
                 >
                   <div className="secret-card__icon-wrap">{s.icon}</div>
                   <h3 className="secret-card__title">{s.title}</h3>
@@ -118,7 +117,6 @@ export default function SecretJourney() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.55 + i * 0.07 }}
-                  whileHover={{ y: -3 }}
                 >
                   <div className="book-card__icon-wrap">
                     {bookIcons[book.category]}
