@@ -266,6 +266,7 @@ export default function Experience() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08, duration: 0.5 }}
+                whileHover={{ y: -6 }}
               >
                 <div className="mc-card__icon-wrap">
                   <Mic size={20} />

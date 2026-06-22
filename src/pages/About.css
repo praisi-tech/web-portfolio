@@ -176,11 +176,15 @@
   gap: 16px;
   width: max-content;
   white-space: nowrap;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 .marquee-content {
   display: flex;
   gap: 16px;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 /* Alternating directions */
@@ -220,6 +224,7 @@
   box-shadow: var(--shadow-sm);
   transition: all 0.3s ease;
   user-select: none;
+  will-change: transform;
 }
 
 @media (hover: hover) {

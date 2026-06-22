@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Github, ExternalLink, Eye, FileText } from 'lucide-react';
 import './ProjectModal.css';
@@ -10,39 +11,41 @@ export default function ProjectModal({ project, onClose }) {
     window.open(`${window.location.origin}/pdfs/${encoded}`, '_blank');
   };
 
-  return (
-    <AnimatePresence>
+  const modalContent = (
+    <motion.div
+      className="modal-overlay"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
       <motion.div
-        className="modal-overlay"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onClose}
+        className={`modal-panel ${project.thumbnail ? 'has-hero' : ''}`}
+        initial={{ opacity: 0, y: 48, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 48, scale: 0.95 }}
+        transition={{ type: 'spring', stiffness: 280, damping: 28 }}
+        onClick={e => e.stopPropagation()}
       >
-        <motion.div
-          className="modal-panel"
-          initial={{ opacity: 0, y: 48, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 48, scale: 0.95 }}
-          transition={{ type: 'spring', stiffness: 280, damping: 28 }}
-          onClick={e => e.stopPropagation()}
-        >
-          {/* Hero Image */}
-          {project.thumbnail && (
-            <div className="modal-hero" style={{ cursor: 'zoom-in' }} onClick={() => window.open(project.thumbnail, '_blank')} title="Click to view full image">
-              <img src={project.thumbnail} alt={project.name} className="modal-hero-img" />
-            </div>
-          )}
+        <button id="modal-close" className="modal-close" onClick={onClose} aria-label="Close modal">
+          <X size={20} />
+        </button>
 
+        {/* Hero Image */}
+        {project.thumbnail && (
+          <div className="modal-hero" style={{ cursor: 'zoom-in' }} onClick={() => window.open(project.thumbnail, '_blank')} title="Click to view full image">
+            <img src={project.thumbnail} alt={project.name} className="modal-hero-img" />
+          </div>
+        )}
+
+        {/* Information Side/Container */}
+        <div className="modal-info">
           {/* Header */}
           <div className="modal-header">
             <div>
               <h2 className="modal-title">{project.name}</h2>
               <p className="modal-tagline">{project.tagline}</p>
             </div>
-            <button id="modal-close" className="modal-close" onClick={onClose}>
-              <X size={20} />
-            </button>
           </div>
 
           <div className="modal-body">
@@ -95,8 +98,10 @@ export default function ProjectModal({ project, onClose }) {
               )}
             </div>
           </div>
-        </motion.div>
+        </div>
       </motion.div>
-    </AnimatePresence>
+    </motion.div>
   );
+
+  return createPortal(modalContent, document.body);
 }
