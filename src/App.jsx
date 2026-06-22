@@ -7,16 +7,17 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import ParticleBackground from './components/ParticleBackground';
 
-// Lazy-load all pages for better bundle splitting
-const Home = lazy(() => import('./pages/Home'));
-const About = lazy(() => import('./pages/About'));
-const Projects = lazy(() => import('./pages/Projects'));
-const Experience = lazy(() => import('./pages/Experience'));
-const HackThePortfolio = lazy(() => import('./pages/HackThePortfolio'));
-const SecretJourney = lazy(() => import('./pages/SecretJourney'));
+import Home from './pages/Home';
+import About from './pages/About';
+import Projects from './pages/Projects';
+import Experience from './pages/Experience';
+import HackThePortfolio from './pages/HackThePortfolio';
+import SecretJourney from './pages/SecretJourney';
+import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
+
+// Keep CertificateClaim lazy because of heavy libraries (jspdf, html2canvas)
 const CertificateClaim = lazy(() => import('./pages/CertificateClaim'));
-const Contact = lazy(() => import('./pages/Contact'));
-const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Minimal page-level loading state (invisible shimmer)
 function PageLoader() {
@@ -45,13 +46,13 @@ function PageLoader() {
 
 // Page transition variants — reduced motion aware via CSS
 const pageVariants = {
-  initial: { opacity: 0, y: 10 },
+  initial: { opacity: 0, y: 6 },
   animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -10 },
+  exit: { opacity: 0, y: -6 },
 };
 
 const pageTransition = {
-  duration: 0.25,
+  duration: 0.15,
   ease: [0.4, 0, 0.2, 1],
 };
 
