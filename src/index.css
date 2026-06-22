@@ -94,7 +94,22 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* Only use smooth scroll on desktop with pointer (not mobile - causes iOS inertia conflict) */
+  scroll-behavior: auto;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html { scroll-behavior: smooth; }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 body {
@@ -103,8 +118,13 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   transition: background-color var(--transition-slow), color var(--transition-slow);
-  overflow-x: hidden;
+  /* Use per-container overflow instead of body-level to preserve iOS scroll inertia */
+  overflow-x: clip;
+  /* Smooth momentum scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
 }
 
 /* ---------- Typography ---------- */
@@ -184,6 +204,10 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration: none;
   transition: all var(--transition);
   white-space: nowrap;
+  /* Prevent 300ms tap delay on mobile */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 .btn-primary {
@@ -193,7 +217,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(11,138,111,0.35);
+  box-shadow: 0 8px 30px rgba(226,91,139,0.35);
 }
 
 .btn-secondary {
@@ -201,6 +225,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-primary);
   border: 1px solid var(--border-strong);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 .btn-secondary:hover {
   background: var(--bg-card);
@@ -376,8 +401,26 @@ textarea.input {
   .section { padding: 64px 0; }
   .section-title { font-size: 2rem; }
   .container { padding: 0 16px; }
+  .section-header { margin-bottom: 40px; }
+  .section-subtitle { font-size: 1rem; }
 }
 
 @media (max-width: 480px) {
   .section { padding: 48px 0; }
+  .section-title { font-size: 1.75rem; }
+  .container { padding: 0 14px; }
+}
+
+/* ---------- Global interactive touch targets ---------- */
+a, button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- GPU layer hints for animated elements ---------- */
+.animate-float,
+.animate-spin-slow,
+.animate-pulse-glow {
+  will-change: transform;
+  transform: translateZ(0);
 }

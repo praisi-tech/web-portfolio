@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Block secret/hidden pages from indexing
+Disallow: /hack
+Disallow: /secret-journey
+Disallow: /certificate-claim
+
+Sitemap: https://website-portfolio-psi-ten.vercel.app/sitemap.xml

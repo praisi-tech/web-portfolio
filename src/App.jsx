@@ -1,61 +1,94 @@
-import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { lazy, Suspense } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ThemeProvider } from './context/ThemeContext';
 import { CTFProvider } from './context/CTFContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import ParticleBackground from './components/ParticleBackground';
-import Home from './pages/Home';
-import About from './pages/About';
-import Projects from './pages/Projects';
-import Experience from './pages/Experience';
-import HackThePortfolio from './pages/HackThePortfolio';
-import SecretJourney from './pages/SecretJourney';
-import CertificateClaim from './pages/CertificateClaim';
-import Contact from './pages/Contact';
 
-function ScrollToTop() {
-  const { pathname } = useLocation();
+// Lazy-load all pages for better bundle splitting
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Projects = lazy(() => import('./pages/Projects'));
+const Experience = lazy(() => import('./pages/Experience'));
+const HackThePortfolio = lazy(() => import('./pages/HackThePortfolio'));
+const SecretJourney = lazy(() => import('./pages/SecretJourney'));
+const CertificateClaim = lazy(() => import('./pages/CertificateClaim'));
+const Contact = lazy(() => import('./pages/Contact'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  return null;
+// Minimal page-level loading state (invisible shimmer)
+function PageLoader() {
+  return (
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'var(--bg-primary)',
+    }}>
+      <motion.div
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: '50%',
+          border: '3px solid var(--border-color)',
+          borderTopColor: 'var(--accent-emerald)',
+        }}
+        animate={{ rotate: 360 }}
+        transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
+      />
+    </div>
+  );
 }
 
-function HashRedirect() {
-  const navigate = useNavigate();
+// Page transition variants — reduced motion aware via CSS
+const pageVariants = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -10 },
+};
 
-  useEffect(() => {
-    if (window.location.hash && window.location.hash.startsWith('#/')) {
-      const cleanPath = window.location.hash.substring(2);
-      // Clean hash from browser url
-      window.history.replaceState(null, '', '/' + cleanPath);
-      // Navigate internally in React Router
-      navigate('/' + cleanPath, { replace: true });
-    }
-  }, [navigate]);
+const pageTransition = {
+  duration: 0.25,
+  ease: [0.4, 0, 0.2, 1],
+};
 
-  return null;
+function AnimatedPage({ children }) {
+  return (
+    <motion.div
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={pageTransition}
+      style={{ willChange: 'opacity, transform' }}
+    >
+      {children}
+    </motion.div>
+  );
 }
 
 function AppRoutes() {
   const location = useLocation();
+
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/experience" element={<Experience />} />
-        <Route path="/hack" element={<HackThePortfolio />} />
-        <Route path="/secret-journey" element={<SecretJourney />} />
-        <Route path="/certificate-claim" element={<CertificateClaim />} />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
-    </AnimatePresence>
+    <Suspense fallback={<PageLoader />}>
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<AnimatedPage><Home /></AnimatedPage>} />
+          <Route path="/about" element={<AnimatedPage><About /></AnimatedPage>} />
+          <Route path="/projects" element={<AnimatedPage><Projects /></AnimatedPage>} />
+          <Route path="/experience" element={<AnimatedPage><Experience /></AnimatedPage>} />
+          <Route path="/hack" element={<AnimatedPage><HackThePortfolio /></AnimatedPage>} />
+          <Route path="/secret-journey" element={<AnimatedPage><SecretJourney /></AnimatedPage>} />
+          <Route path="/certificate-claim" element={<AnimatedPage><CertificateClaim /></AnimatedPage>} />
+          <Route path="/contact" element={<AnimatedPage><Contact /></AnimatedPage>} />
+          <Route path="*" element={<AnimatedPage><NotFound /></AnimatedPage>} />
+        </Routes>
+      </AnimatePresence>
+    </Suspense>
   );
 }
 
@@ -64,9 +97,6 @@ export default function App() {
     <ThemeProvider>
       <CTFProvider>
         <BrowserRouter>
-          <ScrollToTop />
-          <HashRedirect />
-          {/* Global particle canvas — fixed behind all pages */}
           <ParticleBackground />
           <Navbar />
           <ErrorBoundary>
@@ -77,4 +107,3 @@ export default function App() {
     </ThemeProvider>
   );
 }
-

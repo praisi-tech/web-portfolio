@@ -1,11 +1,15 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useTheme } from '../context/ThemeContext';
 
-const PARTICLE_COUNT = 80;
-const MAX_DIST = 140;
+// Detect mobile/touch to use fewer particles and skip mouse tracking
+const IS_MOBILE = window.matchMedia('(hover: none) and (pointer: coarse)').matches
+  || window.innerWidth < 768;
+
+const PARTICLE_COUNT = IS_MOBILE ? 30 : 80;
+const MAX_DIST = IS_MOBILE ? 100 : 140;
 const MOUSE_ATTRACT_RADIUS = 220;
 const MOUSE_ATTRACT_STRENGTH = 0.018;
-const BASE_SPEED = 0.45;
+const BASE_SPEED = IS_MOBILE ? 0.3 : 0.45;
 
 function createParticle(w, h) {
   const angle = Math.random() * Math.PI * 2;
@@ -52,32 +56,34 @@ export default function ParticleBackground() {
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i];
 
-      // Mouse attraction
-      const dx = mouse.x - p.x;
-      const dy = mouse.y - p.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < MOUSE_ATTRACT_RADIUS && dist > 0) {
-        const force = (1 - dist / MOUSE_ATTRACT_RADIUS) * MOUSE_ATTRACT_STRENGTH;
-        p.vx += (dx / dist) * force;
-        p.vy += (dy / dist) * force;
-      }
+      // Mouse attraction — only on desktop
+      if (!IS_MOBILE) {
+        const dx = mouse.x - p.x;
+        const dy = mouse.y - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < MOUSE_ATTRACT_RADIUS && dist > 0) {
+          const force = (1 - dist / MOUSE_ATTRACT_RADIUS) * MOUSE_ATTRACT_STRENGTH;
+          p.vx += (dx / dist) * force;
+          p.vy += (dy / dist) * force;
+        }
 
-      // Speed cap
-      const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-      const maxSpeed = BASE_SPEED * 2.5;
-      if (speed > maxSpeed) {
-        p.vx = (p.vx / speed) * maxSpeed;
-        p.vy = (p.vy / speed) * maxSpeed;
-      }
+        // Speed cap
+        const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        const maxSpeed = BASE_SPEED * 2.5;
+        if (speed > maxSpeed) {
+          p.vx = (p.vx / speed) * maxSpeed;
+          p.vy = (p.vy / speed) * maxSpeed;
+        }
 
-      // Gradually return to base speed when far from mouse
-      if (dist >= MOUSE_ATTRACT_RADIUS) {
-        p.vx *= 0.995;
-        p.vy *= 0.995;
-        const curSpeed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-        if (curSpeed < BASE_SPEED * 0.3) {
-          p.vx += (Math.random() - 0.5) * 0.05;
-          p.vy += (Math.random() - 0.5) * 0.05;
+        // Gradually return to base speed when far from mouse
+        if (dist >= MOUSE_ATTRACT_RADIUS) {
+          p.vx *= 0.995;
+          p.vy *= 0.995;
+          const curSpeed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+          if (curSpeed < BASE_SPEED * 0.3) {
+            p.vx += (Math.random() - 0.5) * 0.05;
+            p.vy += (Math.random() - 0.5) * 0.05;
+          }
         }
       }
 
@@ -149,8 +155,8 @@ export default function ParticleBackground() {
       }
     }
 
-    // Soft glow at cursor
-    if (mouse.x > 0 && mouse.y > 0) {
+    // Soft glow at cursor — desktop only
+    if (!IS_MOBILE && mouse.x > 0 && mouse.y > 0) {
       const glowColor = theme === 'dark'
         ? 'rgba(255,125,168,0.15)'
         : 'rgba(226,91,139,0.12)';
@@ -196,8 +202,22 @@ export default function ParticleBackground() {
 
     resize();
     window.addEventListener('resize', resize);
-    window.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseleave', onMouseLeave);
+
+    // Mouse/touch events — desktop only
+    if (!IS_MOBILE) {
+      window.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseleave', onMouseLeave);
+    }
+
+    // Pause animation when tab is not visible (saves battery)
+    const handleVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(stateRef.current.animId);
+      } else {
+        stateRef.current.animId = requestAnimationFrame(draw);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
 
     stateRef.current.animId = requestAnimationFrame(draw);
 
@@ -205,6 +225,7 @@ export default function ParticleBackground() {
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseleave', onMouseLeave);
+      document.removeEventListener('visibilitychange', handleVisibility);
       cancelAnimationFrame(stateRef.current.animId);
     };
   }, [draw]);

@@ -133,8 +133,17 @@
   font-weight: 600;
   color: var(--text-secondary);
   min-height: 2rem;
+  /* GPU layer for smooth text animation on mobile */
+  transform: translateZ(0);
+  will-change: contents;
 }
-.hero__subtitle-text { color: var(--accent-blue); }
+.hero__subtitle-text {
+  color: var(--accent-blue);
+  /* Smooth rendering for rapidly changing text */
+  display: inline-block;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
 .hero__cursor {
   color: var(--accent-emerald);
   font-weight: 300;
@@ -352,9 +361,24 @@
   .hero__desc { font-size: 0.9rem; }
   .hero__ctas { flex-direction: column; width: 100%; }
   .hero__ctas .btn { justify-content: center; }
-  .hero__portrait-wrapper { width: 200px; height: 200px; }
-  .hero__chip { display: none; }
+  /* Show smaller portrait on mobile */
+  .hero__portrait-wrapper { width: 180px; height: 180px; }
+  /* Keep chips visible but smaller on small mobile */
+  .hero__chip { 
+    font-size: 0.7rem;
+    padding: 6px 10px;
+    gap: 4px;
+  }
+  /* Adjust chip positions for smaller portrait */
+  .hero__chip--1 { top: 0; right: -40px; }
+  .hero__chip--2 { bottom: 30px; right: -44px; }
+  .hero__chip--3 { bottom: 0; left: -40px; }
   .hero__quicknav { padding-bottom: 16px; }
   .hero__quicknav-item { padding: 10px 14px; }
+}
+
+@media (max-width: 380px) {
+  .hero__chip { display: none; }
+  .hero__portrait-wrapper { width: 160px; height: 160px; }
 }
 
