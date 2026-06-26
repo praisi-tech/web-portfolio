@@ -70,9 +70,9 @@ export default function ProjectModal({ project, onClose }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="modal-link-btn modal-link-btn--github"
+                  aria-label="GitHub"
                 >
-                  <Github size={16} />
-                  GitHub
+                  <Github size={18} />
                 </a>
               )}
               {project.demo && (
@@ -81,19 +81,18 @@ export default function ProjectModal({ project, onClose }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="modal-link-btn modal-link-btn--live"
+                  aria-label="Live Site"
                 >
-                  <ExternalLink size={16} />
-                  Live Site
+                  <ExternalLink size={18} />
                 </a>
               )}
               {project.pdf && (
                 <button
                   className="modal-link-btn modal-link-btn--pdf"
                   onClick={handlePdfPreview}
+                  aria-label="Preview PDF"
                 >
-                  <Eye size={16} />
-                  Preview PDF
-                  <FileText size={13} style={{ opacity: 0.6 }} />
+                  <FileText size={18} />
                 </button>
               )}
             </div>

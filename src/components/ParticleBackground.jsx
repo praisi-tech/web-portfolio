@@ -29,6 +29,7 @@ export default function ParticleBackground() {
   const stateRef = useRef({
     particles: [],
     mouse: { x: -9999, y: -9999 },
+    lastMouseMove: Date.now(),
     animId: null,
     w: 0,
     h: 0,
@@ -48,16 +49,35 @@ export default function ParticleBackground() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+
+    // Reset mouse to inactive if stationary for more than 3 seconds
+    if (Date.now() - s.lastMouseMove > 3000) {
+      s.mouse = { x: -9999, y: -9999 };
+    }
+
     const { w, h, particles, mouse } = s;
 
+    // Safety guard: skip drawing if dimensions are invalid or too small
+    if (!w || !h || w < 20 || h < 20) {
+      s.animId = requestAnimationFrame(draw);
+      return;
+    }
+
+    const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches
+      || window.innerWidth < 768;
+
     ctx.clearRect(0, 0, w, h);
+
+    const colorsList = colorsRef.current && colorsRef.current.length > 0
+      ? colorsRef.current
+      : ['#60A5FA'];
 
     // Update + draw particles
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i];
 
       // Mouse attraction — only on desktop
-      if (!IS_MOBILE) {
+      if (!isMobile) {
         const dx = mouse.x - p.x;
         const dy = mouse.y - p.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -107,10 +127,10 @@ export default function ParticleBackground() {
       }
 
       // Draw particle
-      const colorIdx = i % colorsRef.current.length;
+      const colorIdx = i % colorsList.length;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = colorsRef.current[colorIdx];
+      ctx.fillStyle = colorsList[colorIdx];
       ctx.globalAlpha = p.alpha;
       ctx.fill();
       ctx.globalAlpha = 1;
@@ -129,7 +149,7 @@ export default function ParticleBackground() {
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = colorsRef.current[i % colorsRef.current.length];
+          ctx.strokeStyle = colorsList[i % colorsList.length];
           ctx.globalAlpha = alpha;
           ctx.lineWidth = 0.8;
           ctx.stroke();
@@ -137,26 +157,28 @@ export default function ParticleBackground() {
         }
       }
 
-      // Lines from particle to cursor
-      const a = particles[i];
-      const mdx = a.x - mouse.x;
-      const mdy = a.y - mouse.y;
-      const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-      if (mdist < MOUSE_ATTRACT_RADIUS * 0.75) {
-        const alpha = (1 - mdist / (MOUSE_ATTRACT_RADIUS * 0.75)) * 0.4;
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(mouse.x, mouse.y);
-        ctx.strokeStyle = colorsRef.current[i % colorsRef.current.length];
-        ctx.globalAlpha = alpha;
-        ctx.lineWidth = 0.6;
-        ctx.stroke();
-        ctx.globalAlpha = 1;
+      // Lines from particle to cursor — desktop only
+      if (!isMobile && mouse.x > 0 && mouse.y > 0) {
+        const a = particles[i];
+        const mdx = a.x - mouse.x;
+        const mdy = a.y - mouse.y;
+        const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+        if (mdist < MOUSE_ATTRACT_RADIUS * 0.75) {
+          const alpha = (1 - mdist / (MOUSE_ATTRACT_RADIUS * 0.75)) * 0.4;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.strokeStyle = colorsList[i % colorsList.length];
+          ctx.globalAlpha = alpha;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+        }
       }
     }
 
     // Soft glow at cursor — desktop only
-    if (!IS_MOBILE && mouse.x > 0 && mouse.y > 0) {
+    if (!isMobile && mouse.x > 0 && mouse.y > 0) {
       const glowColor = theme === 'dark'
         ? 'rgba(255,125,168,0.15)'
         : 'rgba(226,91,139,0.12)';
@@ -179,21 +201,44 @@ export default function ParticleBackground() {
     const resize = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
+      
+      // Safety guard: ignore invalid or tiny dimensions (like when tab/app goes backgrounded)
+      if (!w || !h || w < 20 || h < 20) return;
+
+      const oldW = stateRef.current.w;
+      const oldH = stateRef.current.h;
+
       canvas.width = w;
       canvas.height = h;
       stateRef.current.w = w;
       stateRef.current.h = h;
+
       if (stateRef.current.particles.length === 0) {
         stateRef.current.particles = Array.from(
           { length: PARTICLE_COUNT },
           () => createParticle(w, h)
         );
+      } else if (oldW > 0 && oldH > 0) {
+        // Proportional resizing: translate coordinates to fit new window dimensions
+        stateRef.current.particles.forEach(p => {
+          p.x = (p.x / oldW) * w;
+          p.y = (p.y / oldH) * h;
+        });
       }
     };
 
     const onMouseMove = (e) => {
-      // Fixed canvas occupies the full viewport so clientX = canvas X
+      const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches
+        || window.innerWidth < 768;
+      
+      // Skip if mobile or touch interaction
+      if (isMobile || e.pointerType === 'touch' || e.pointerType === 'pen') {
+        stateRef.current.mouse = { x: -9999, y: -9999 };
+        return;
+      }
+      
       stateRef.current.mouse = { x: e.clientX, y: e.clientY };
+      stateRef.current.lastMouseMove = Date.now();
     };
 
     const onMouseLeave = () => {
@@ -203,17 +248,14 @@ export default function ParticleBackground() {
     resize();
     window.addEventListener('resize', resize);
 
-    // Mouse/touch events — desktop only
-    if (!IS_MOBILE) {
-      window.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseleave', onMouseLeave);
-    }
+    // Register mouse listeners (touch events are filtered inside onMouseMove)
+    window.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseleave', onMouseLeave);
 
     // Pause animation when tab is not visible (saves battery)
     const handleVisibility = () => {
-      if (document.hidden) {
-        cancelAnimationFrame(stateRef.current.animId);
-      } else {
+      cancelAnimationFrame(stateRef.current.animId);
+      if (!document.hidden) {
         stateRef.current.animId = requestAnimationFrame(draw);
       }
     };

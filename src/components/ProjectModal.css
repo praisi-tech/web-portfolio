@@ -158,73 +158,48 @@
   border-radius: var(--radius-full);
   font-size: 0.8rem;
   font-weight: 600;
-  background: color-mix(in srgb, var(--accent-blue) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent-blue) 28%, transparent);
-  color: var(--accent-blue);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
   transition: all 0.2s ease;
 }
 
 .modal-tech-tag:hover {
-  background: color-mix(in srgb, var(--accent-blue) 20%, transparent);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
   transform: translateY(-1px);
 }
 
 /* ─── Link Buttons ────────────────────────────────── */
 .modal-links {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
-  padding-top: 4px;
+  padding-top: 16px;
   border-top: 1px solid var(--border-color);
 }
 
 .modal-link-btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 10px 20px;
-  border-radius: var(--radius-full);
-  font-size: 0.85rem;
-  font-weight: 600;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition);
   text-decoration: none;
-  border: 1.5px solid transparent;
 }
 
-.modal-link-btn--github {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: var(--border-color);
-  color: var(--text-primary);
-}
-
-.modal-link-btn--github:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.22);
-  transform: translateY(-1px);
-}
-
-.modal-link-btn--live {
-  background: var(--accent-emerald);
+.modal-link-btn:hover {
   border-color: var(--accent-emerald);
-  color: #fff;
-}
-
-.modal-link-btn--live:hover {
-  filter: brightness(1.15);
-  transform: translateY(-1px);
-}
-
-.modal-link-btn--pdf {
-  background: rgba(249, 115, 22, 0.1);
-  border-color: rgba(249, 115, 22, 0.35);
-  color: #f97316;
-}
-
-.modal-link-btn--pdf:hover {
-  background: rgba(249, 115, 22, 0.18);
-  border-color: rgba(249, 115, 22, 0.55);
-  transform: translateY(-1px);
+  color: var(--accent-emerald);
+  transform: scale(1.08);
+  background: color-mix(in srgb, var(--accent-emerald) 8%, transparent);
 }
 
 /* ─── Badges ──────────────────────────────────────── */

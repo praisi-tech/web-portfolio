@@ -2,7 +2,8 @@ import { motion } from 'framer-motion';
 import {
   Code, Shield, Users, BookOpen, Cpu, Globe, Terminal, Database, MapPin, GraduationCap, Heart,
   ShieldCheck, KeyRound, FileWarning, FileCheck, Network, Router, Cable, Server,
-  UserCheck, Handshake, FileText, TrendingUp, Mic, Volume2, MessageSquare, Presentation, Calendar
+  UserCheck, Handshake, FileText, TrendingUp, Mic, Volume2, MessageSquare, Presentation, Calendar,
+  Search, Wifi
 } from 'lucide-react';
 import './About.css';
 
@@ -27,7 +28,10 @@ const lucideIcons = {
   Presentation: <Presentation size={20} />,
   Calendar: <Calendar size={20} />,
   Cpu: <Cpu size={20} />,
-  Globe: <Globe size={20} />
+  Globe: <Globe size={20} />,
+  Shield: <Shield size={20} />,
+  Search: <Search size={20} />,
+  Wifi: <Wifi size={20} />
 };
 
 const row1Skills = [
@@ -54,6 +58,10 @@ const row2Skills = [
   { name: 'Ethical Hacking', icon: 'Terminal', type: 'lucide' },
   { name: 'OWASP Top 10', icon: 'FileWarning', type: 'lucide' },
   { name: 'ISO 27001', icon: 'FileCheck', type: 'lucide' },
+  { name: 'Digital Forensic', icon: 'Shield', type: 'lucide' },
+  { name: 'Autopsy', icon: 'Search', type: 'lucide' },
+  { name: 'FTP', icon: 'Cable', type: 'lucide' },
+  { name: 'Access Point', icon: 'Wifi', type: 'lucide' },
   { name: 'Cisco Packet Tracer', icon: 'Network', type: 'lucide' },
   { name: 'MikroTik', icon: 'Router', type: 'lucide' },
   { name: 'TCP/IP', icon: 'Cable', type: 'lucide' },
@@ -106,9 +114,9 @@ function MarqueeRow({ skills, direction = 'left' }) {
 
 const stats = [
   { value: '9+', label: 'Projects Built' },
+  { value: '20+', label: 'Tools Mastered' },
   { value: '5+', label: 'Certifications' },
   { value: '2+', label: 'Years Experience' },
-  { value: '15+', label: 'Happy Clients' },
 ];
 
 const fadeUp = {
@@ -134,7 +142,7 @@ export default function About() {
             <motion.div className="about__portrait-wrap" variants={fadeUp}>
               <div className="about__portrait-ring" />
               <img
-                src="/profile/about-foto.png"
+                src="/profile/about-foto.webp"
                 alt="Praisilia Anastasya"
                 className="about__portrait"
               />
@@ -177,7 +185,7 @@ export default function About() {
                 I've led tech teams, participated in competitions, and built projects that solve real-world problems. I believe great technology sits at the intersection of strong engineering, thoughtful design, and security-first thinking.
               </p>
               <p className="about__body-text">
-                When I'm not coding or chasing flags, you'll find me mentoring junior developers, operating export business, or helping other people to grow through MC-ing or public speaking. I am driven by the belief that technology built with integrity
+                When I'm not coding or chasing flags, you'll find me mentoring other developers, operating export business, or helping other people to grow through MC-ing or public speaking. I am driven by the belief that technology built with integrity
                 creates lasting value.
               </p>
             </motion.div>

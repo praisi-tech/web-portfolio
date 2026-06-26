@@ -274,7 +274,6 @@
   }
   .about__portrait { width: 200px; height: 240px; }
   .about__meta-row { justify-content: center; }
-  .about__stats-row { grid-template-columns: repeat(4, 1fr); }
   .about__intro { padding-top: 0; }
 }
 

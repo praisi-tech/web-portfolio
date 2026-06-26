@@ -3,7 +3,8 @@ import { Navigate, Link } from 'react-router-dom';
 import { useCTF } from '../context/CTFContext';
 import {
   BookOpen, Star, Lightbulb, Trophy, ArrowRight,
-  Lock, Code, Shield, Cpu, Sprout, Repeat, Users, Sparkles, Heart
+  Lock, Code, Shield, Cpu, Sprout, Repeat, Users, Sparkles, Heart,
+  Brain, Coins
 } from 'lucide-react';
 import './SecretJourney.css';
 
@@ -14,20 +15,28 @@ const bookIcons = {
   Communication: <Sparkles size={20} />,
   'Self-Discovery': <Heart size={20} />,
   Philosophy: <Lightbulb size={20} />,
+  'Critical Thinking': <Brain size={20} />,
+  'Finance & Business': <Coins size={20} />,
 };
 
 const books = [
+  {
+    title: 'Makanya Mikir',
+    author: 'Henry Manampiring',
+    category: 'Critical Thinking',
+    description: 'An Indonesian guide to critical thinking, cognitive biases, and logical fallacies to build objective reasoning skills.'
+  },
+  {
+    title: 'Filosofi Teras',
+    author: 'Henry Manampiring',
+    category: 'Philosophy',
+    description: 'An Indonesian guide introducing Stoicism (Stoa philosophy) to build mental resilience and stay calm in chaos.'
+  },
   {
     title: 'Atomic Habits',
     author: 'James Clear',
     category: 'Productivity',
     description: 'Teaches the power of making tiny 1% daily improvements to build life-changing habits.'
-  },
-  {
-    title: 'Start with Why',
-    author: 'Simon Sinek',
-    category: 'Leadership',
-    description: 'Explains how the most influential leaders inspire action by focusing on the "Why" before the "How" and "What".'
   },
   {
     title: 'The 7 Habits of Highly Effective People',
@@ -36,22 +45,40 @@ const books = [
     description: 'A timeless guide to solving personal and professional problems based on core universal principles.'
   },
   {
+    title: 'The Magic of Thinking Big',
+    author: 'David J. Schwartz',
+    category: 'Personal Growth',
+    description: 'Teaches the power of setting high goals and believing in oneself to achieve outstanding personal and career success.'
+  },
+  {
+    title: 'Start with Why',
+    author: 'Simon Sinek',
+    category: 'Leadership',
+    description: 'Explains how the most influential leaders inspire action by focusing on the "Why" before the "How" and "What".'
+  },
+  {
     title: 'How to Win Friends and Influence People',
     author: 'Dale Carnegie',
     category: 'Communication',
     description: 'Provides practical, legendary advice on how to build relationships, communicate effectively, and inspire trust.'
   },
   {
+    title: 'Cashflow Quadrant',
+    author: 'Robert T. Kiyosaki',
+    category: 'Finance & Business',
+    description: 'Details the four categories of income generation: Employee, Self-Employed, Business Owner, and Investor.'
+  },
+  {
+    title: 'Rich Dad Poor Dad',
+    author: 'Robert T. Kiyosaki',
+    category: 'Finance & Business',
+    description: 'Introduces fundamental concepts of financial literacy, asset building, and the mindset shift from employee to investor.'
+  },
+  {
     title: 'You Do You',
     author: 'Fellexandro Ruby',
     category: 'Self-Discovery',
     description: 'A modern guide to understanding your strengths, managing finances, and navigating life through self-experiments.'
-  },
-  {
-    title: 'Filosofi Teras',
-    author: 'Henry Manampiring',
-    category: 'Philosophy',
-    description: 'An Indonesian guide introducing Stoicism (Stoa philosophy) to build mental resilience and stay calm in chaos.'
   },
 ];
 

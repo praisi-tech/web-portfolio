@@ -137,7 +137,7 @@ export default function Home() {
               <div className="hero__portrait-ring hero__portrait-ring--inner" />
               <div className="hero__portrait">
                 <img
-                  src="/profile/Praisilia-home.jpg"
+                  src="/profile/Praisilia-home.webp"
                   alt="Praisilia Anastasya"
                 />
               </div>

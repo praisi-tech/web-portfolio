@@ -211,7 +211,7 @@ export default function Experience() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06 }}
-                onClick={() => window.open(cert.image, '_blank')}
+                onClick={() => window.open(cert.pdf || cert.image, '_blank')}
                 style={{ cursor: 'pointer' }}
                 title="Click to view full certificate"
               >

@@ -1,4 +1,6 @@
-/* ── Generator card ──────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+/* â”€â”€ Generator card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cert-claim-card {
   padding: 36px;
   margin-bottom: 24px;
@@ -6,7 +8,6 @@
   flex-direction: column;
   gap: 28px;
 }
-
 .cert-claim-card__header {
   display: flex;
   align-items: flex-start;
@@ -15,190 +16,188 @@
 .cert-claim-card__header svg { color: var(--accent-emerald); flex-shrink: 0; margin-top: 4px; }
 .cert-claim-card__header h2 { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
 .cert-claim-card__header p  { font-size: 0.875rem; color: var(--text-secondary); }
-
 .cert-claim-form {
   display: flex;
   flex-direction: column;
   gap: 16px;
   max-width: 480px;
 }
-.cert-claim-label { display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
+.cert-claim-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
 
-/* ── Certificate preview ─────────────────────────────────────────────────── */
+/* â”€â”€ Certificate preview wrapper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cert-preview { display: flex; flex-direction: column; gap: 24px; }
 
+/* â”€â”€ The certificate card (A4 landscape ratio) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cert-preview__card {
   position: relative;
   background: #ffffff;
-  border-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+  /* ISO A4 landscape aspect ratio */
+  aspect-ratio: 297 / 210;
   overflow: hidden;
-  box-shadow: 0 8px 40px rgba(59,130,246,0.14), 0 2px 12px rgba(0,0,0,0.08);
-  border: 1.5px solid #bfdbfe;
+  box-shadow:
+    0 12px 50px rgba(18, 62, 165, 0.22),
+    0 3px 14px rgba(0, 0, 0, 0.10);
+  border-radius: 4px;
 }
 
-/* Blue top accent bar */
-.cert-preview__top-bar {
-  position: relative;
-  z-index: 1;
-  height: 5px;
-  background: #3b82f6;
-}
-
-.cert-preview__border-outer {
-  position: relative;
-  z-index: 1;
-  margin: 16px 16px 0;
-  border: 1.5px solid #1e293b;
-  border-radius: calc(var(--radius-xl) - 8px);
-  padding: 3px;
-}
-
-.cert-preview__border-inner {
-  border: 1px solid #93c5fd;
-  border-radius: calc(var(--radius-xl) - 12px);
-  padding: 36px 40px 28px;
-  text-align: center;
+/* â”€â”€ Content area (sits above SVG layer) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.cert-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  background: #f8fafc;
-}
-
-/* Shield badge */
-.cert-preview__badge {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: #eff6ff;
-  border: 2px solid #93c5fd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #3b82f6;
-  margin-bottom: 4px;
-  box-shadow: 0 0 20px rgba(59,130,246,0.2);
-}
-
-/* Ornament row flanking the title */
-.cert-preview__ornament-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  justify-content: center;
-}
-
-.cert-preview__ornament-line {
-  flex: 1;
-  max-width: 80px;
-  min-width: 20px;
-  height: 1px;
-  background: #93c5fd;
-}
-
-.cert-preview__certified-text {
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.2em;
-  color: #3b82f6;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.cert-preview__presented-to {
-  font-size: 0.85rem;
-  color: #64748b;
-  margin-top: 4px;
-}
-
-.cert-preview__name {
-  font-size: 2.4rem;
-  font-weight: 900;
-  color: #0f172a;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-}
-
-.cert-preview__divider {
-  width: 160px;
-  height: 2px;
-  background: #3b82f6;
-  margin: 2px 0;
-}
-
-.cert-preview__challenge { font-size: 0.85rem; color: #64748b; }
-
-.cert-preview__challenge-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #1d4ed8;
-}
-
-.cert-preview__desc {
-  font-size: 0.78rem;
-  color: #475569;
-  line-height: 1.65;
-  max-width: 480px;
-}
-
-/* Blue footer strip */
-.cert-preview__footer-strip {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-  padding: 18px 40px;
-  margin: 16px 16px 0;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  border-radius: calc(var(--radius-xl) - 8px);
-}
-
-.cert-preview__footer-sep {
-  width: 1px;
-  height: 32px;
-  background: #bfdbfe;
-}
-
-.cert-preview__footer-item { display: flex; flex-direction: column; gap: 4px; align-items: center; }
-
-.cert-preview__footer-label {
-  font-size: 0.6rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #3b82f6;
-}
-.cert-preview__footer-value {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #0f172a;
-}
-
-/* Tagline below card */
-.cert-preview__tagline {
-  position: relative;
-  z-index: 1;
-  font-size: 0.62rem;
-  color: #94a3b8;
   text-align: center;
-  padding: 10px 16px 16px;
-  letter-spacing: 0.04em;
+  /* Horizontal padding keeps text inside the non-decorated center zone (~26% each side) */
+  padding: 6% 26% 8%;
+  justify-content: center;
 }
 
-/* Actions */
+/* â”€â”€ Level 1: CERTIFICATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.cert-title {
+  font-family: 'Cinzel', 'Georgia', serif;
+  font-size: clamp(1.5rem, 5.2vw, 3.4rem);
+  font-weight: 400;
+  letter-spacing: 0.13em;
+  line-height: 1;
+  margin: 0 0 0.12em;
+  /* Blue gradient text */
+  background: linear-gradient(135deg, #0D2D8E 0%, #123EA5 35%, #3B82F6 70%, #39D2FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* â”€â”€ Level 2: of Completion â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.cert-subtitle {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(0.95rem, 2.5vw, 1.65rem);
+  font-weight: 400;
+  color: #111111;
+  line-height: 1;
+  margin: 0 0 1.5em;
+}
+
+/* â”€â”€ Level 3: This Certifies that â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.cert-certifies {
+  font-family: 'Libre Baskerville', 'Times New Roman', serif;
+  font-size: clamp(0.6rem, 1.6vw, 1.05rem);
+  font-weight: 400;
+  color: #222222;
+  margin: 0 0 0.45em;
+}
+
+/* â”€â”€ Level 4: Recipient Name â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.cert-name {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(1.8rem, 5.6vw, 3.7rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0 0 0.12em;
+  background: linear-gradient(135deg, #0D2D8E 0%, #123EA5 35%, #3B82F6 75%, #39D2FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Divider line below name */
+.cert-name-divider {
+  width: 65%;
+  height: 2px;
+  background: #111111;
+  margin: 0 auto 0.7em;
+  flex-shrink: 0;
+}
+
+/* â”€â”€ Level 5: has successfully completed â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.cert-completed-text {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(0.48rem, 1.25vw, 0.82rem);
+  color: #333333;
+  margin: 0 0 0.2em;
+}
+
+/* â”€â”€ Level 6: Challenge title â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.cert-challenge-title {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  font-size: clamp(0.7rem, 1.85vw, 1.22rem);
+  font-weight: 600;
+  color: #3B82F6;
+  line-height: 1.35;
+  margin: 0 0 0.28em;
+}
+
+/* â”€â”€ Level 7: Description â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.cert-desc {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(0.36rem, 0.96vw, 0.63rem);
+  color: #555555;
+  line-height: 1.65;
+  max-width: 88%;
+  margin: 0;
+}
+
+/* â”€â”€ Footer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.cert-footer {
+  position: absolute;
+  bottom: 9.5%;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  gap: 13%;
+  padding: 0 24% 0;
+}
+
+.cert-footer__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.cert-footer__label {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(0.33rem, 0.88vw, 0.58rem);
+  color: #4B5563; /* Slate grey for clean readability */
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cert-footer__value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(0.48rem, 1.28vw, 0.84rem);
+  font-weight: 600;
+  color: #1A50C8; /* Match the primary corner blue color */
+}
+
+/* â”€â”€ Actions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .cert-preview__actions { display: flex; flex-direction: column; gap: 12px; }
 .cert-preview__btns { display: flex; gap: 12px; }
 
-/* ── Responsive ──────────────────────────────────────────────────────────── */
+/* â”€â”€ Responsive â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @media (max-width: 640px) {
-  .cert-preview__footer-strip { gap: 20px; padding: 14px 20px; }
-  .cert-preview__border-inner { padding: 28px 16px 20px; }
-  .cert-preview__name { font-size: 1.6rem; }
   .cert-claim-card { padding: 24px; }
-  .cert-preview__border-outer { margin: 12px 12px 0; }
-  .cert-preview__footer-strip { margin: 10px 12px 0; }
+  .cert-content { padding: 5% 20% 14%; }
+  .cert-footer { gap: 8%; padding: 0 20% 4%; }
+}
+
+/* ── PDF Render Overrides ── */
+.rendering-pdf .cert-title,
+.rendering-pdf .cert-name {
+  background: none !important;
+  -webkit-text-fill-color: #1A50C8 !important;
+  color: #1A50C8 !important;
 }

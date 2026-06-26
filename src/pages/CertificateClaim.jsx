@@ -1,12 +1,57 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Navigate } from 'react-router-dom';
 import { useCTF } from '../context/CTFContext';
-import { Trophy, Download, Shield } from 'lucide-react';
+import { Trophy, Download } from 'lucide-react';
 import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 import './CertificateClaim.css';
 
-/* ─── Component ─────────────────────────────────────────────────────────── */
+/* ─── Certificate background SVG ─────────────────────────────────────────────
+   One SVG covers the entire A4 landscape area (viewBox 0 0 297 210).
+   Coordinates map 1:1 to millimetres since the card has the same aspect ratio.
+   ─────────────────────────────────────────────────────────────────────────── */
+function CertBackground() {
+  return (
+    <svg
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+      viewBox="0 0 297 210"
+      preserveAspectRatio="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* ── 1. Outer dark navy frame (full bleed background) ── */}
+      <rect width="297" height="210" fill="#1E3A8A"/>
+
+      {/* ── 2. White inner content area ── */}
+      <rect x="21" y="13" width="255" height="184" fill="#FFFFFF"/>
+
+      {/* ── 3. Corner diagonal accent shapes ─────────────────────────────────
+              Rendered after white rect so they appear on top at corners        */}
+
+      {/* Bottom-left — primary large shape */}
+      <polygon points="0,210 0,110 76,210" fill="#1A50C8"/>
+      {/* Bottom-left — inner brighter accent */}
+      <polygon points="0,210 0,152 46,210" fill="#2563EB"/>
+
+      {/* Top-right — mirror of bottom-left */}
+      <polygon points="297,0 297,100 221,0" fill="#1A50C8"/>
+      {/* Top-right — inner brighter accent */}
+      <polygon points="297,0 297,58 251,0" fill="#2563EB"/>
+
+      {/* Top-left — small balance element */}
+      <polygon points="0,0 46,0 0,33" fill="#1A50C8"/>
+
+      {/* Bottom-right — small balance element */}
+      <polygon points="297,210 297,177 254,210" fill="#1A50C8"/>
+
+      {/* ── 4. Thin inner border rectangle (rendered on top of shapes) ── */}
+      <rect x="26" y="18" width="245" height="174"
+            fill="none" stroke="#1A50C8" strokeWidth="1.2"/>
+    </svg>
+  );
+}
+
+/* ─── Component ───────────────────────────────────────────────────────────── */
 export default function CertificateClaim() {
   const { isComplete } = useCTF();
   const [name, setName] = useState('');
@@ -24,141 +69,46 @@ export default function CertificateClaim() {
     setGenerated({ name: name.trim(), date });
   };
 
-  const handleDownload = () => {
-    if (!generated) return;
+  /* ── PDF generation ─────────────────────────────────────────────────────── */
+  const handleDownload = async () => {
+    if (!generated || !certRef.current) return;
     setDownloading(true);
     try {
+      // Ensure all custom web fonts ('Cinzel', 'Great Vibes', etc.) are loaded before capture
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
 
+      // Add temporary class to disable text gradients during rendering
+      certRef.current.classList.add('rendering-pdf');
+
+      // Render the cert card element to a high-DPI canvas
+      const canvas = await html2canvas(certRef.current, {
+        scale: 3, // Premium print resolution
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null,
+      });
+
+      // Remove temporary class immediately after rendering
+      certRef.current.classList.remove('rendering-pdf');
+
+      const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+
+      // Embed the generated high-res screenshot covering the full A4 canvas
+      pdf.addImage(imgData, 'PNG', 0, 0, 297, 210);
+
+      // Check if page is in an iframe or running in the IDE's Electron webview wrapper
+      const isIframe = window.self !== window.top;
+      const isElectron = /electron/i.test(navigator.userAgent);
       
-      // 1. Background (Light Slate/Neutral)
-      pdf.setFillColor('#f8fafc');
-      pdf.rect(0, 0, 297, 210, 'F');
-      
-      // 2. Outer Border (Dark Slate)
-      pdf.setDrawColor('#1e293b');
-      pdf.setLineWidth(1.2);
-      pdf.rect(12, 12, 273, 186, 'S');
-      
-      // 3. Inner Border (Blue Accent)
-      pdf.setDrawColor('#93c5fd');
-      pdf.setLineWidth(0.8);
-      pdf.rect(15, 15, 267, 180, 'S');
-      
-      // 4. Top Accent Bar (Solid Blue)
-      pdf.setFillColor('#3b82f6');
-      pdf.rect(15, 15, 267, 4, 'F');
-      
-      // 5. Shield Badge (Circular vector shield matching Lucide Shield)
-      pdf.setFillColor('#eff6ff');
-      pdf.setDrawColor('#3b82f6');
-      pdf.setLineWidth(1.5);
-      pdf.circle(148.5, 42, 10, 'FD');
-      
-      // Draw shield outline matching Lucide Shield path
-      pdf.setDrawColor('#3b82f6');
-      pdf.setLineWidth(1.1);
-      pdf.line(148.5, 36.8, 144.5, 38.3);
-      pdf.line(148.5, 36.8, 152.5, 38.3);
-      pdf.line(144.5, 38.3, 144.5, 43.0);
-      pdf.line(152.5, 38.3, 152.5, 43.0);
-      pdf.line(144.5, 43.0, 145.8, 45.4);
-      pdf.line(145.8, 45.4, 148.5, 47.3);
-      pdf.line(152.5, 43.0, 151.2, 45.4);
-      pdf.line(151.2, 45.4, 148.5, 47.3);
-      // Vertical seam for professional touch
-      pdf.setDrawColor('#bfdbfe');
-      pdf.setLineWidth(0.6);
-      pdf.line(148.5, 37.3, 148.5, 46.8);
-      
-      // 6. Certificate Title
-      pdf.setFont('helvetica', 'bold');
-      pdf.setFontSize(18);
-      pdf.setTextColor('#3b82f6');
-      pdf.text('CERTIFICATE OF COMPLETION', 148.5, 66, { align: 'center' });
-      
-      // Flanking horizontal ornament lines
-      pdf.setDrawColor('#93c5fd');
-      pdf.setLineWidth(0.5);
-      pdf.line(40, 64, 85, 64);
-      pdf.line(212, 64, 257, 64);
-      
-      // 7. Presentation Subtitle
-      pdf.setFont('helvetica', 'normal');
-      pdf.setFontSize(12);
-      pdf.setTextColor('#64748b');
-      pdf.text('This certifies that', 148.5, 78, { align: 'center' });
-      
-      // 8. Recipient Name
-      pdf.setFont('helvetica', 'bold');
-      pdf.setFontSize(28);
-      pdf.setTextColor('#0f172a');
-      pdf.text(generated.name, 148.5, 94, { align: 'center' });
-      
-      // Underline divider
-      pdf.setDrawColor('#3b82f6');
-      pdf.setLineWidth(0.75);
-      pdf.line(100, 100, 197, 100);
-      
-      // 9. Completion Details
-      pdf.setFont('helvetica', 'normal');
-      pdf.setFontSize(11);
-      pdf.setTextColor('#64748b');
-      pdf.text('has successfully completed the', 148.5, 108, { align: 'center' });
-      
-      pdf.setFont('helvetica', 'bold');
-      pdf.setFontSize(14);
-      pdf.setTextColor('#1d4ed8');
-      pdf.text('Hack The Portfolio — Security Challenge', 148.5, 118, { align: 'center' });
-      
-      pdf.setFont('helvetica', 'normal');
-      pdf.setFontSize(9.5);
-      pdf.setTextColor('#475569');
-      const descText = 'by discovering all three hidden flags through web security analysis, OSINT investigation, and a multi-phase security consultant simulation.';
-      const splitDesc = pdf.splitTextToSize(descText, 180);
-      pdf.text(splitDesc, 148.5, 128, { align: 'center' });
-      
-      // 10. Footer Info Strip (Vector Box)
-      pdf.setFillColor('#eff6ff');
-      pdf.setDrawColor('#bfdbfe');
-      pdf.setLineWidth(0.5);
-      pdf.rect(30, 145, 237, 24, 'FD');
-      
-      // Left side: Issued by
-      pdf.setFont('helvetica', 'bold');
-      pdf.setFontSize(8);
-      pdf.setTextColor('#3b82f6');
-      pdf.text('ISSUED BY', 75, 153, { align: 'center' });
-      
-      pdf.setFont('helvetica', 'bold');
-      pdf.setFontSize(11);
-      pdf.setTextColor('#0f172a');
-      pdf.text('Praisilia Anastasya', 75, 161, { align: 'center' });
-      
-      // Center separator
-      pdf.setDrawColor('#bfdbfe');
-      pdf.setLineWidth(0.5);
-      pdf.line(148.5, 148, 148.5, 166);
-      
-      // Right side: Issue date
-      pdf.setFont('helvetica', 'bold');
-      pdf.setFontSize(8);
-      pdf.setTextColor('#3b82f6');
-      pdf.text('ISSUE DATE', 222, 153, { align: 'center' });
-      
-      pdf.setFont('helvetica', 'bold');
-      pdf.setFontSize(11);
-      pdf.setTextColor('#0f172a');
-      pdf.text(generated.date, 222, 161, { align: 'center' });
-      
-      // 11. Website tagline
-      pdf.setFont('helvetica', 'normal');
-      pdf.setFontSize(8);
-      pdf.setTextColor('#94a3b8');
-      pdf.text('Portfolio Security Challenge — praisilia.dev', 148.5, 182, { align: 'center' });
-      
-      // 12. Save PDF directly
-      pdf.save(`CTF-Certificate-${generated.name.replace(/\s+/g, '-')}.pdf`);
+      if (isIframe || isElectron) {
+        const blobUrl = pdf.output('bloburl');
+        window.open(blobUrl, '_blank');
+      } else {
+        pdf.save(`CTF-Certificate-${generated.name.replace(/\s+/g, '-')}.pdf`);
+      }
     } catch (e) {
       console.error('PDF error:', e);
       alert('PDF generation failed. Please try again.');
@@ -219,56 +169,45 @@ export default function CertificateClaim() {
               </div>
             ) : (
               <motion.div className="cert-preview" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
+
+                {/* ─── Certificate Card ─── */}
                 <div className="cert-preview__card" ref={certRef}>
-                  {/* Blue top bar */}
-                  <div className="cert-preview__top-bar" />
 
-                  <div className="cert-preview__border-outer">
-                    <div className="cert-preview__border-inner">
-                      {/* Shield badge */}
-                      <div className="cert-preview__badge">
-                        <Shield size={26} />
-                      </div>
+                  {/* Full-card SVG background with parallelogram decorations */}
+                  <CertBackground />
 
-                      {/* Ornament flanking lines */}
-                      <div className="cert-preview__ornament-row">
-                        <div className="cert-preview__ornament-line" />
-                        <p className="cert-preview__certified-text">CERTIFICATE OF COMPLETION</p>
-                        <div className="cert-preview__ornament-line" />
-                      </div>
-
-                      <p className="cert-preview__presented-to">This certifies that</p>
-                      <h2 className="cert-preview__name">{generated.name}</h2>
-                      <div className="cert-preview__divider" />
-                      <p className="cert-preview__challenge">has successfully completed the</p>
-                      <h3 className="cert-preview__challenge-title">Hack The Portfolio — Security Challenge</h3>
-                      <p className="cert-preview__desc">
-                        by discovering all three hidden flags through web security analysis, OSINT investigation,
-                        and a multi-phase security consultant simulation.
-                      </p>
-                    </div>
+                  {/* Main Content */}
+                  <div className="cert-content">
+                    <h1 className="cert-title">Certificate</h1>
+                    <p className="cert-subtitle">of Completion</p>
+                    <p className="cert-certifies">This Certifies that</p>
+                    <h2 className="cert-name">{generated.name}</h2>
+                    <div className="cert-name-divider" />
+                    <p className="cert-completed-text">has successfully completed the</p>
+                    <p className="cert-challenge-title">Hack The Portfolio &#8212; Security Challenge.</p>
+                    <p className="cert-desc">
+                      by discovering all three hidden flags through web security analysis, OSINT
+                      investigation, and a multi-phase security consultant simulation.
+                    </p>
                   </div>
 
-                  {/* Blue footer strip */}
-                  <div className="cert-preview__footer-strip">
-                    <div className="cert-preview__footer-item">
-                      <span className="cert-preview__footer-label">Issued by</span>
-                      <span className="cert-preview__footer-value">Praisilia Anastasya</span>
+                  {/* Footer */}
+                  <div className="cert-footer">
+                    <div className="cert-footer__item">
+                      <span className="cert-footer__label">Issued by</span>
+                      <span className="cert-footer__value">Praisilia Anastasya</span>
                     </div>
-                    <div className="cert-preview__footer-sep" />
-                    <div className="cert-preview__footer-item">
-                      <span className="cert-preview__footer-label">Issue Date</span>
-                      <span className="cert-preview__footer-value">{generated.date}</span>
+                    <div className="cert-footer__item">
+                      <span className="cert-footer__label">Issue Date</span>
+                      <span className="cert-footer__value">{generated.date}</span>
                     </div>
                   </div>
-
-                  <p className="cert-preview__tagline">Portfolio Security Challenge — praisilia.dev</p>
                 </div>
 
                 <div className="cert-preview__actions">
                   <div className="cert-preview__btns">
                     <button id="cert-download-btn" className="btn btn-primary" onClick={handleDownload} disabled={downloading}>
-                      <Download size={16} /> {downloading ? 'Generating…' : 'Download PDF'}
+                      <Download size={16} /> {downloading ? 'Generating\u2026' : 'Download PDF'}
                     </button>
                     <button className="btn btn-secondary" onClick={() => setGenerated(null)}>
                       Generate New
