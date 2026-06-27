@@ -111,8 +111,10 @@ export default function SecretJourney() {
                   transition={{ delay: 0.3 + i * 0.08 }}
                 >
                   <div className="secret-card__icon-wrap">{s.icon}</div>
-                  <h3 className="secret-card__title">{s.title}</h3>
-                  <p className="secret-card__body">{s.body}</p>
+                  <div className="secret-card__text">
+                    <h3 className="secret-card__title">{s.title}</h3>
+                    <p className="secret-card__body">{s.body}</p>
+                  </div>
                 </motion.div>
               ))}
             </div>

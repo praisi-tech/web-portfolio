@@ -5,7 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 const IS_MOBILE = window.matchMedia('(hover: none) and (pointer: coarse)').matches
   || window.innerWidth < 768;
 
-const PARTICLE_COUNT = IS_MOBILE ? 30 : 80;
+const PARTICLE_COUNT = IS_MOBILE ? 20 : 50;
 const MAX_DIST = IS_MOBILE ? 100 : 140;
 const MOUSE_ATTRACT_RADIUS = 220;
 const MOUSE_ATTRACT_STRENGTH = 0.018;

@@ -434,58 +434,115 @@
   flex-shrink: 0;
 }
 
-/* ══════════════════════════════════════════
+/* ══════════════════════════════════════════════════════════════
    RESPONSIVE — Hack The Portfolio Page
-   ══════════════════════════════════════════ */
+   ══════════════════════════════════════════════════════════════ */
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
+
+  /* ── Status panel ── */
   .hack-status {
-    padding: 20px 16px;
+    padding: 18px 16px;
     gap: 12px;
+    margin-bottom: 16px;
   }
+  .hack-status__header {
+    font-size: 0.875rem;
+  }
+  .hack-status__subtitle {
+    font-size: 0.82rem;
+  }
+
+  /* ── Flag pills ── */
   .hack-flags {
     gap: 8px;
   }
   .hack-flag {
-    padding: 8px 14px;
-    font-size: 0.78rem;
+    padding: 7px 12px;
+    font-size: 0.75rem;
+    gap: 6px;
   }
+
+  /* ── All-flags-complete banner ── */
+  .hack-complete {
+    padding: 14px 16px;
+    gap: 10px;
+  }
+  .hack-complete__title {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+  .hack-complete__links {
+    flex-direction: column;
+  }
+  .hack-complete__links .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ── Completed badge inside challenge ── */
+  .completed-badge {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+  .completed-badge__flag {
+    /* Long flag strings must wrap, not overflow */
+    word-break: break-all;
+    font-size: 0.78rem;
+    display: block;
+  }
+
+  /* ── Overview card ── */
   .hack-overview {
-    padding: 20px 16px;
+    padding: 18px 16px;
+    margin-bottom: 16px;
+  }
+  .hack-overview__title {
+    font-size: 1rem;
+  }
+  .hack-overview__desc {
+    font-size: 0.85rem;
+  }
+
+  /* ── Challenge cards ── */
+  .hack-challenges {
+    gap: 12px;
   }
   .hack-challenge__header {
-    padding: 16px;
-    gap: 12px;
+    padding: 14px 16px;
+    gap: 10px;
   }
   .hack-challenge__left {
     gap: 12px;
+    min-width: 0; /* allow text to truncate/wrap */
   }
   .hack-challenge__icon {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
   }
+  .hack-challenge__title {
+    font-size: 0.875rem;
+  }
+  .hack-challenge__desc {
+    font-size: 0.8rem;
+  }
+  .hack-challenge__meta {
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+
+  /* ── Challenge body ── */
   .challenge-body {
-    padding: 16px;
+    padding: 14px 16px;
     gap: 12px;
   }
-  .challenge-phase {
-    padding: 16px 12px;
+  .challenge-desc {
+    font-size: 0.85rem;
   }
-  .threat-row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-  }
-  .threat-select {
-    width: 100%;
-  }
-  .log-snippet__body {
-    font-size: 0.72rem;
-    padding: 8px 10px;
-  }
-}
 
-@media (max-width: 480px) {
+  /* ── Input row: stack vertically on small screens ── */
   .challenge-input-row {
     flex-direction: column;
     align-items: stretch;
@@ -495,4 +552,98 @@
     width: 100%;
     justify-content: center;
   }
+
+  /* ── Hint box ── */
+  .challenge-hint {
+    font-size: 0.82rem;
+    padding: 10px 14px;
+  }
+  .challenge-hint code {
+    word-break: break-all;
+    font-size: 0.78rem;
+  }
+
+  /* ── OSINT questions ── */
+  .osint-label {
+    font-size: 0.82rem;
+  }
+
+  /* ── Phase progress stepper ── */
+  .challenge-phase {
+    padding: 14px 16px;
+    gap: 10px;
+  }
+  .phase-progress {
+    gap: 6px;
+  }
+  .phase-step {
+    font-size: 0.7rem;
+    padding: 5px 9px;
+    gap: 5px;
+  }
+  .phase-step__num {
+    width: 16px;
+    height: 16px;
+    font-size: 0.6rem;
+  }
+  .phase-title {
+    font-size: 0.875rem;
+  }
+
+  /* ── Scenario box ── */
+  .phase-scenario {
+    font-size: 0.78rem;
+    padding: 10px 12px;
+    word-break: break-word;
+  }
+
+  /* ── Auth log snippet ── */
+  .log-snippet__header {
+    font-size: 0.62rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 5px 10px;
+  }
+  .log-snippet__body {
+    font-size: 0.68rem;
+    padding: 8px;
+    line-height: 1.55;
+  }
+
+  /* ── Threat prioritization rows ── */
+  .threat-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .threat-vuln {
+    font-size: 0.82rem;
+  }
+  .threat-select {
+    width: 100%;
+  }
+
+  /* ── Error message ── */
+  .challenge-error {
+    font-size: 0.8rem;
+    align-items: flex-start;
+  }
+
+  /* ── Hint: contact link ── */
+  .hack-status__hint {
+    font-size: 0.8rem;
+  }
 }
+
+/* ── Very small screens (≤ 380px) ── */
+@media (max-width: 380px) {
+  .hack-status { padding: 14px 12px; }
+  .hack-challenge__header { padding: 12px; }
+  .challenge-body { padding: 12px; }
+  .challenge-phase { padding: 12px; }
+  .hack-flag { font-size: 0.72rem; padding: 6px 10px; }
+  .phase-step { font-size: 0.65rem; padding: 4px 7px; }
+}
+

@@ -139,6 +139,9 @@ export default function Home() {
                 <img
                   src="/profile/Praisilia-home.webp"
                   alt="Praisilia Anastasya"
+                  fetchpriority="high"
+                  loading="eager"
+                  decoding="async"
                 />
               </div>
               {/* Floating chips — Lucide icons only */}

@@ -7,17 +7,19 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import ParticleBackground from './components/ParticleBackground';
 
+// Home is eager — it's the landing page, must be instant
 import Home from './pages/Home';
-import About from './pages/About';
-import Projects from './pages/Projects';
-import Experience from './pages/Experience';
-import Certificates from './pages/Certificates';
-import HackThePortfolio from './pages/HackThePortfolio';
-import SecretJourney from './pages/SecretJourney';
-import Contact from './pages/Contact';
-import NotFound from './pages/NotFound';
 
-// Keep CertificateClaim lazy because of heavy libraries (jspdf, html2canvas)
+// All other pages are lazy — only downloaded when the user navigates to them
+const About            = lazy(() => import('./pages/About'));
+const Projects         = lazy(() => import('./pages/Projects'));
+const Experience       = lazy(() => import('./pages/Experience'));
+const Certificates     = lazy(() => import('./pages/Certificates'));
+const HackThePortfolio = lazy(() => import('./pages/HackThePortfolio'));
+const SecretJourney    = lazy(() => import('./pages/SecretJourney'));
+const Contact          = lazy(() => import('./pages/Contact'));
+const NotFound         = lazy(() => import('./pages/NotFound'));
+// CertificateClaim also lazy — extra heavy (jspdf + html2canvas)
 const CertificateClaim = lazy(() => import('./pages/CertificateClaim'));
 
 // Minimal page-level loading state (invisible shimmer)
