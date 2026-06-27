@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Navigate } from 'react-router-dom';
 import { useCTF } from '../context/CTFContext';
-import { Trophy, Download } from 'lucide-react';
+import { Trophy, Download, AlertCircle } from 'lucide-react';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import './CertificateClaim.css';
@@ -20,42 +20,48 @@ function CertBackground() {
       xmlns="http://www.w3.org/2000/svg"
     >
       {/* ── 1. Outer dark navy frame (full bleed background) ── */}
-      <rect width="297" height="210" fill="#1E3A8A"/>
+      <rect width="297" height="210" fill="#1E3A8A" />
 
       {/* ── 2. White inner content area ── */}
-      <rect x="21" y="13" width="255" height="184" fill="#FFFFFF"/>
+      <rect x="21" y="13" width="255" height="184" fill="#FFFFFF" />
 
       {/* ── 3. Corner diagonal accent shapes ─────────────────────────────────
               Rendered after white rect so they appear on top at corners        */}
 
       {/* Bottom-left — primary large shape */}
-      <polygon points="0,210 0,110 76,210" fill="#1A50C8"/>
+      <polygon points="0,210 0,110 76,210" fill="#1A50C8" />
       {/* Bottom-left — inner brighter accent */}
-      <polygon points="0,210 0,152 46,210" fill="#2563EB"/>
+      <polygon points="0,210 0,152 46,210" fill="#2563EB" />
 
       {/* Top-right — mirror of bottom-left */}
-      <polygon points="297,0 297,100 221,0" fill="#1A50C8"/>
+      <polygon points="297,0 297,100 221,0" fill="#1A50C8" />
       {/* Top-right — inner brighter accent */}
-      <polygon points="297,0 297,58 251,0" fill="#2563EB"/>
+      <polygon points="297,0 297,58 251,0" fill="#2563EB" />
 
       {/* Top-left — small balance element */}
-      <polygon points="0,0 46,0 0,33" fill="#1A50C8"/>
+      <polygon points="0,0 46,0 0,33" fill="#1A50C8" />
 
       {/* Bottom-right — small balance element */}
-      <polygon points="297,210 297,177 254,210" fill="#1A50C8"/>
+      <polygon points="297,210 297,177 254,210" fill="#1A50C8" />
 
       {/* ── 4. Thin inner border rectangle (rendered on top of shapes) ── */}
       <rect x="26" y="18" width="245" height="174"
-            fill="none" stroke="#1A50C8" strokeWidth="1.2"/>
+        fill="none" stroke="#1A50C8" strokeWidth="1.2" />
     </svg>
   );
 }
 
 /* ─── Component ───────────────────────────────────────────────────────────── */
 export default function CertificateClaim() {
-  const { isComplete } = useCTF();
+  const { isComplete, ctfState, claimCertificate } = useCTF();
   const [name, setName] = useState('');
-  const [generated, setGenerated] = useState(null);
+  const [error, setError] = useState('');
+  const [generated, setGenerated] = useState(() => {
+    if (ctfState.claimedName) {
+      return { name: ctfState.claimedName, date: ctfState.claimedDate };
+    }
+    return null;
+  });
   const [downloading, setDownloading] = useState(false);
   const certRef = useRef(null);
 
@@ -68,10 +74,62 @@ export default function CertificateClaim() {
 
   if (!isComplete) return <Navigate to="/hack" replace />;
 
+  const handleNameChange = (e) => {
+    const val = e.target.value;
+    setName(val);
+
+    if (!val.trim()) {
+      setError('');
+      return;
+    }
+
+    // Check characters
+    const allowedCharsRegex = /^[a-zA-Z\s'-]+$/;
+    if (!allowedCharsRegex.test(val)) {
+      setError("Name can only contain letters, spaces, hyphens, and apostrophes.");
+      return;
+    }
+
+    // Check word capitalization
+    const words = val.split(/[\s-]+/);
+    const isCapitalized = words.every(word => {
+      if (!word) return true;
+      const firstChar = word.charAt(0);
+      return firstChar === firstChar.toUpperCase() && firstChar !== firstChar.toLowerCase();
+    });
+
+    if (!isCapitalized) {
+      setError("Each word must start with a capital letter (e.g., Jane Doe).");
+      return;
+    }
+
+    setError('');
+  };
+
   const handleGenerate = () => {
     const trimmed = name.trim();
     if (!trimmed) return;
-    
+
+    // Check characters
+    const allowedCharsRegex = /^[a-zA-Z\s'-]+$/;
+    if (!allowedCharsRegex.test(trimmed)) {
+      setError("Name can only contain letters, spaces, hyphens, and apostrophes.");
+      return;
+    }
+
+    // Check word capitalization
+    const words = trimmed.split(/[\s-]+/);
+    const isCapitalized = words.every(word => {
+      if (!word) return true;
+      const firstChar = word.charAt(0);
+      return firstChar === firstChar.toUpperCase() && firstChar !== firstChar.toLowerCase();
+    });
+
+    if (!isCapitalized) {
+      setError("Each word must start with a capital letter (e.g., Jane Doe).");
+      return;
+    }
+
     // Mitigation: Injection & Buffer Overrun / Layout DOS
     if (trimmed.length > 50) {
       alert("Name is too long. Maximum 50 characters allowed for validation and printing.");
@@ -80,13 +138,12 @@ export default function CertificateClaim() {
 
     // Strip HTML to prevent tag injection in rendering canvas
     const sanitized = trimmed.replace(/<[^>]*>/g, '');
-    
-    const date = new Date().toLocaleDateString('en-US', {
-      year: 'numeric', month: 'long', day: 'numeric',
-    });
 
-    console.warn(`[SECURITY AUDIT] Certificate claim signature generated successfully for: "${sanitized}" at ${new Date().toISOString()}`);
-    setGenerated({ name: sanitized, date });
+    const result = claimCertificate(sanitized);
+    if (result) {
+      console.warn(`[SECURITY AUDIT] Certificate claim signature generated permanently for: "${sanitized}" at ${new Date().toISOString()}`);
+      setGenerated(result);
+    }
   };
 
   /* ── PDF generation ─────────────────────────────────────────────────────── */
@@ -122,7 +179,7 @@ export default function CertificateClaim() {
       // Check if page is in an iframe or running in the IDE's Electron webview wrapper
       const isIframe = window.self !== window.top;
       const isElectron = /electron/i.test(navigator.userAgent);
-      
+
       if (isIframe || isElectron) {
         const blobUrl = pdf.output('bloburl');
         window.open(blobUrl, '_blank');
@@ -170,20 +227,46 @@ export default function CertificateClaim() {
                   <input
                     id="cert-name-input"
                     type="text"
-                    className="input"
+                    className={`input ${error ? 'input--error' : ''}`}
                     placeholder="Enter your name..."
                     autoComplete="name"
                     maxLength={50}
                     value={name}
-                    onChange={e => setName(e.target.value)}
+                    onChange={handleNameChange}
                     onKeyDown={e => e.key === 'Enter' && handleGenerate()}
                   />
+                  {error ? (
+                    <p className="cert-claim-error" style={{
+                      color: '#EF4444',
+                      fontSize: '0.8rem',
+                      marginTop: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}>
+                      <AlertCircle size={14} />
+                      {error}
+                    </p>
+                  ) : (
+                    <p className="cert-claim-warning" style={{
+                      color: name.trim() ? '#F59E0B' : 'var(--text-muted)',
+                      fontSize: '0.8rem',
+                      marginTop: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      transition: 'color var(--transition)'
+                    }}>
+                      <AlertCircle size={14} />
+                      Attention: You can only generate this certificate ONCE. Make sure your name is spelled correctly as it cannot be changed.
+                    </p>
+                  )}
                 </div>
                 <button
                   id="cert-generate-btn"
                   className="btn btn-primary btn-lg"
                   onClick={handleGenerate}
-                  disabled={!name.trim()}
+                  disabled={!name.trim() || !!error}
                 >
                   <Trophy size={18} /> Generate Certificate
                 </button>
@@ -229,9 +312,6 @@ export default function CertificateClaim() {
                   <div className="cert-preview__btns">
                     <button id="cert-download-btn" className="btn btn-primary" onClick={handleDownload} disabled={downloading}>
                       <Download size={16} /> {downloading ? 'Generating\u2026' : 'Download PDF'}
-                    </button>
-                    <button className="btn btn-secondary" onClick={() => setGenerated(null)}>
-                      Generate New
                     </button>
                   </div>
                 </div>

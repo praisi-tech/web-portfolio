@@ -9,6 +9,8 @@ const defaultState = {
     flag3: false, // hash of: flag{future_security_consultant}
   },
   completedAt: null,
+  claimedName: null,
+  claimedDate: null,
 };
 
 const CTFContext = createContext();
@@ -67,6 +69,19 @@ export function CTFProvider({ children }) {
     return false;
   };
 
+  const claimCertificate = (name) => {
+    if (ctfState.claimedName) return false;
+    const date = new Date().toLocaleDateString('en-US', {
+      year: 'numeric', month: 'long', day: 'numeric',
+    });
+    setCTFState(prev => ({
+      ...prev,
+      claimedName: name,
+      claimedDate: date,
+    }));
+    return { name, date };
+  };
+
   const isComplete = Object.values(ctfState.flags).every(Boolean);
   const flagCount = Object.values(ctfState.flags).filter(Boolean).length;
 
@@ -81,7 +96,7 @@ export function CTFProvider({ children }) {
   };
 
   return (
-    <CTFContext.Provider value={{ ctfState, submitFlag, isComplete, flagCount, reset }}>
+    <CTFContext.Provider value={{ ctfState, submitFlag, isComplete, flagCount, claimCertificate, reset }}>
       {children}
     </CTFContext.Provider>
   );

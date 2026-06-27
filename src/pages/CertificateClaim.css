@@ -202,3 +202,10 @@
   -webkit-text-fill-color: #1A50C8 !important;
   color: #1A50C8 !important;
 }
+
+/* ── Input Error Override ── */
+.input.input--error {
+  border-color: #EF4444 !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.15) !important;
+}
+
