@@ -357,13 +357,7 @@
   }
   .hero__title { font-size: clamp(1.6rem, 7vw, 2.4rem); }
   .hero__intro { font-size: 0.85rem; }
-  .hero__subtitle { font-size: 1rem; }
-  .hero__subtitle-text { display: none !important; }
-  .hero__cursor { display: none !important; }
-  .hero__subtitle::after {
-    content: "Innovation";
-    color: var(--accent-blue);
-  }
+  .hero__subtitle { display: none !important; }
   .hero__desc { font-size: 0.9rem; }
   .hero__ctas { flex-direction: column; width: 100%; }
   .hero__ctas .btn { justify-content: center; }
