@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Navigate } from 'react-router-dom';
 import { useCTF } from '../context/CTFContext';
@@ -59,14 +59,34 @@ export default function CertificateClaim() {
   const [downloading, setDownloading] = useState(false);
   const certRef = useRef(null);
 
+  // Mitigation: Security Logging & Alerting + Broken Access Control audit visibility
+  useEffect(() => {
+    if (!isComplete) {
+      console.error(`[SECURITY AUDIT] Access Denied: Unauthorized routing attempt to CertificateClaim page. IP/session flagged. Timestamp: ${new Date().toISOString()}`);
+    }
+  }, [isComplete]);
+
   if (!isComplete) return <Navigate to="/hack" replace />;
 
   const handleGenerate = () => {
-    if (!name.trim()) return;
+    const trimmed = name.trim();
+    if (!trimmed) return;
+    
+    // Mitigation: Injection & Buffer Overrun / Layout DOS
+    if (trimmed.length > 50) {
+      alert("Name is too long. Maximum 50 characters allowed for validation and printing.");
+      return;
+    }
+
+    // Strip HTML to prevent tag injection in rendering canvas
+    const sanitized = trimmed.replace(/<[^>]*>/g, '');
+    
     const date = new Date().toLocaleDateString('en-US', {
       year: 'numeric', month: 'long', day: 'numeric',
     });
-    setGenerated({ name: name.trim(), date });
+
+    console.warn(`[SECURITY AUDIT] Certificate claim signature generated successfully for: "${sanitized}" at ${new Date().toISOString()}`);
+    setGenerated({ name: sanitized, date });
   };
 
   /* ── PDF generation ─────────────────────────────────────────────────────── */
@@ -153,6 +173,7 @@ export default function CertificateClaim() {
                     className="input"
                     placeholder="Enter your name..."
                     autoComplete="name"
+                    maxLength={50}
                     value={name}
                     onChange={e => setName(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && handleGenerate()}

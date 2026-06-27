@@ -174,12 +174,32 @@ The design is built on a CSS variable token system in [`src/index.css`](src/inde
 
 ## 📱 Mobile Performance
 
-- Particle count: **30 on mobile** (vs. 80 on desktop)
+- Particle count: **20 on mobile** (vs. 50 on desktop)
 - Mouse tracking: **disabled on touch devices**
 - Animation loop: **paused when tab is hidden** (saves battery)
 - Typewriter: **GPU-accelerated** via `translateZ(0)`
 - Scroll: **iOS momentum scrolling** enabled
 
+## 🛡️ Security & OWASP Top 10 Hardening
+
+Built with a security-first mindset, this portfolio implements modern frontend security practices aligned with the **OWASP Top 10**:
+
+- **A01:2021-Broken Access Control**
+  - **Secure Navigation Control**: Page authorization states (like CTF completion checks) are guarded on the routing layer using React state lifecycle guards, preventing path traversal access.
+- **A03:2021-Injection**
+  - **XSS Mitigation**: Safe rendering using React's built-in JSX auto-escaping for dynamic text elements, preventing Cross-Site Scripting.
+- **A05:2021-Security Misconfiguration**
+  - **Strict HTTP Headers**: Configured via `vercel.json` to enforce defensive security layers:
+    - **Content Security Policy (CSP)**: Strict source allowlist (`default-src 'self'`) restricting dynamic script executions to prevent unauthorized injections.
+    - **HTTP Strict Transport Security (HSTS)**: Multi-year TLS enforcement (`max-age=63072000; includeSubDomains; preload`).
+    - **X-Frame-Options**: Set to `DENY` to eliminate Clickjacking vector threats.
+    - **X-Content-Type-Options**: Set to `nosniff` preventing browser MIME-sniffing execution exploits.
+    - **Referrer-Policy**: Restricts referrer exposure to `strict-origin-when-cross-origin`.
+    - **Permissions-Policy**: Restricts browser features (e.g., camera, microphone, geolocation) to absolute none `()`.
+- **A08:2021-Software and Data Integrity Failures**
+  - **Tabnapping Mitigation**: Secured all external links (`window.open`) and static anchor elements with explicit `rel="noopener noreferrer"` or `noopener,noreferrer` options to isolate browser context control.
+
 ## 📄 License
 
 MIT © [Praisilia Anastasya](https://github.com/praisi-tech)
+

@@ -141,7 +141,7 @@ export default function SecretJourney() {
                   <div>
                     <p className="book-card__title">{book.title}</p>
                     <p className="book-card__author">by {book.author}</p>
-                    <p className="book-card__desc" style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '6px', marginBottom: '8px', lineHeight: '1.5' }}>
+                    <p className="book-card__desc">
                       {book.description}
                     </p>
                     <span className="badge">{book.category}</span>
@@ -157,10 +157,10 @@ export default function SecretJourney() {
             <div>
               <h2>Behind This Portfolio</h2>
               <p>This portfolio is more than a showcase, it's a live system. The CTF challenges embedded within it reflect my belief that portfolios should <em>demonstrate</em> skills, not just describe them. The particle background, the typewriter effect, the name and certificate system, each piece was a deliberate choice to make something memorable.</p>
-              <p style={{ marginTop: 12 }}>The secret journey you've unlocked represents my philosophy: the most interesting paths are the ones that require effort to discover.</p>
-              <p style={{ marginTop: 12 }}>
+              <p>The secret journey you've unlocked represents my philosophy: the most interesting paths are the ones that require effort to discover.</p>
+              <p>
                 Thank you for playing.{' '}
-                <Heart size={15} style={{ display: 'inline', verticalAlign: 'middle', marginLeft: 4, color: 'var(--accent-emerald)', fill: 'var(--accent-emerald)' }} />
+                <Heart size={15} className="secret-heart" />
               </p>
             </div>
           </motion.div>

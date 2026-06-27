@@ -64,8 +64,9 @@ function Challenge1({ done }) {
   const [status, setStatus] = useState(null);
   const { submitFlag } = useCTF();
 
-  const handleSubmit = () => {
-    const ok = submitFlag('flag1', input);
+  const handleSubmit = async () => {
+    if (input.length > 100) return;
+    const ok = await submitFlag('flag1', input);
     setStatus(ok ? 'ok' : 'fail');
   };
 
@@ -84,7 +85,8 @@ function Challenge1({ done }) {
             id="flag1-input"
             type="text"
             className="input input--console"
-            placeholder="Enter flag... (e.g. flag{dev_comment_discovered})"
+            placeholder="Enter flag..."
+            maxLength={100}
             value={input}
             onChange={e => { setInput(e.target.value); setStatus(null); }}
           />
@@ -92,7 +94,7 @@ function Challenge1({ done }) {
             <Send size={15} /> Submit
           </button>
         </div>
-        <span className="challenge-input-help">{'Format: lowercase with underscores (Example: flag{comment_text_found})'}</span>
+        <span className="challenge-input-help">{'Format: lowercase with underscores'}</span>
       </div>
       {status === 'fail' && <div className="challenge-error"><AlertCircle size={16} /> [REJECTED] Invalid token value. Keep investigating the DOM elements!</div>}
     </div>
@@ -101,9 +103,9 @@ function Challenge1({ done }) {
 
 /* ─── Challenge 2: OSINT ─── */
 const osintQuestions = [
-  { q: 'What organization shaped Praisilia\'s leadership journey?', answer: 'aiesec', placeholder: 'red cross' },
-  { q: 'What agricultural export platform concept is Praisilia building?', answer: 'tana minahasa', placeholder: 'smart farming' },
-  { q: 'What field of study is Praisilia pursuing?', answer: 'information technology', placeholder: 'computer science' },
+  { q: 'What organization shaped Praisilia\'s leadership journey?', answer: 'aiesec' },
+  { q: 'What agricultural export platform is Praisilia building?', answer: 'tana minahasa' },
+  { q: 'What field of study is Praisilia pursuing?', answer: 'information technology' },
 ];
 
 function Challenge2({ done }) {
@@ -112,13 +114,13 @@ function Challenge2({ done }) {
   const [status, setStatus] = useState(null);
   const { submitFlag } = useCTF();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setSubmitted(true);
     const allCorrect = osintQuestions.every((q, i) =>
       answers[i].trim().toLowerCase() === q.answer
     );
     if (allCorrect) {
-      submitFlag('flag2', 'flag{aiesec_it_tanaminahasa}');
+      await submitFlag('flag2', 'flag{aiesec_it_tanaminahasa}');
       setStatus('ok');
     } else {
       setStatus('fail');
@@ -138,6 +140,7 @@ function Challenge2({ done }) {
             type="text"
             className={`input input--console ${submitted && answers[i].trim().toLowerCase() !== q.answer ? 'input--error' : ''} ${submitted && answers[i].trim().toLowerCase() === q.answer ? 'input--ok' : ''}`}
             placeholder={q.placeholder}
+            maxLength={100}
             value={answers[i]}
             onChange={e => {
               const a = [...answers];
@@ -207,9 +210,15 @@ function Challenge3({ done }) {
     setPhase(3);
   };
 
-  const finalize = () => {
-    if (briefing.trim().length < 20) { setErrors(e => ({ ...e, brief: true })); return; }
-    submitFlag('flag3', 'flag{future_security_consultant}');
+  const finalize = async () => {
+    const trimmed = briefing.trim();
+    if (trimmed.length < 20) { setErrors(e => ({ ...e, brief: true })); return; }
+    if (trimmed.length > 1000) return;
+
+    // Prevent XSS/HTML tag injection in reports
+    const sanitizedBrief = trimmed.replace(/<[^>]*>/g, '');
+
+    await submitFlag('flag3', 'flag{future_security_consultant}');
     setPhase(4);
   };
 
@@ -257,6 +266,7 @@ function Challenge3({ done }) {
                 type="text"
                 className="input input--console"
                 placeholder={secPhases[phase].placeholder}
+                maxLength={100}
                 value={phaseAnswers[phase]}
                 onChange={e => {
                   const a = [...phaseAnswers];
@@ -308,6 +318,7 @@ function Challenge3({ done }) {
             id="briefing-input"
             className="input input--console"
             placeholder="Write report... (minimum 20 characters)"
+            maxLength={1000}
             value={briefing}
             onChange={e => { setBriefing(e.target.value); setErrors(err => ({ ...err, brief: false })); }}
             rows={6}

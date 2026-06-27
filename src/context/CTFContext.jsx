@@ -4,36 +4,53 @@ const STORAGE_KEY = 'portfolio-ctf';
 
 const defaultState = {
   flags: {
-    flag1: false, // curiosity_is_the_first_step
-    flag2: false, // flag{aiesec_it_tanaminahasa}
-    flag3: false, // flag{future_security_consultant}
+    flag1: false, // hash of: curiosity_is_the_first_step
+    flag2: false, // hash of: flag{aiesec_it_tanaminahasa}
+    flag3: false, // hash of: flag{future_security_consultant}
   },
   completedAt: null,
 };
 
 const CTFContext = createContext();
 
+// Cryptographically secure hashing helper for browser environments
+async function hashFlag(message) {
+  const msgBuffer = new TextEncoder().encode(message.trim());
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 export function CTFProvider({ children }) {
   const [ctfState, setCTFState] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       return saved ? JSON.parse(saved) : defaultState;
-    } catch {
+    } catch (e) {
+      console.error('[SECURITY AUDIT] Failed to parse localStorage state:', e);
       return defaultState;
     }
   });
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(ctfState));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(ctfState));
+    } catch (e) {
+      console.error('[SECURITY AUDIT] Failed to write state to localStorage:', e);
+    }
   }, [ctfState]);
 
-  const submitFlag = (flagKey, value) => {
-    const validFlags = {
-      flag1: 'curiosity_is_the_first_step',
-      flag2: 'flag{aiesec_it_tanaminahasa}',
-      flag3: 'flag{future_security_consultant}',
+  const submitFlag = async (flagKey, value) => {
+    const hashed = await hashFlag(value);
+    
+    const validHashes = {
+      flag1: 'ede7f0f5c1deee1300f0827028fd2450f2708d7aeacc1c3c2c1efe56418eea50',
+      flag2: '3711b2d8f1c2b85ead139b1b9c9e365e64f8a4e07ec1cca45ad76feda160334b',
+      flag3: '7dfbbd9f881d2c49ab0405b1e0df5064b3b63edba65c23f86463c34872e3b58e',
     };
-    if (validFlags[flagKey] === value.trim()) {
+
+    if (validHashes[flagKey] === hashed) {
+      console.warn(`[SECURITY AUDIT] Flag "${flagKey}" successfully captured and verified at ${new Date().toISOString()}`);
       setCTFState(prev => {
         const newFlags = { ...prev.flags, [flagKey]: true };
         const allDone = Object.values(newFlags).every(Boolean);
@@ -45,6 +62,8 @@ export function CTFProvider({ children }) {
       });
       return true;
     }
+    
+    console.error(`[SECURITY AUDIT] Invalid flag submission attempt for key "${flagKey}" at ${new Date().toISOString()}`);
     return false;
   };
 
@@ -52,8 +71,13 @@ export function CTFProvider({ children }) {
   const flagCount = Object.values(ctfState.flags).filter(Boolean).length;
 
   const reset = () => {
+    console.warn(`[SECURITY AUDIT] CTF session state reset by user at ${new Date().toISOString()}`);
     setCTFState(defaultState);
-    localStorage.removeItem(STORAGE_KEY);
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch (e) {
+      console.error('[SECURITY AUDIT] Failed to clear localStorage during reset:', e);
+    }
   };
 
   return (
@@ -64,3 +88,4 @@ export function CTFProvider({ children }) {
 }
 
 export const useCTF = () => useContext(CTFContext);
+
