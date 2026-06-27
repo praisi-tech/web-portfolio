@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Moon, Sun, Shield, Home, User, FolderOpen,
-  Briefcase, Mail, Menu, X, ChevronRight, Award
+  Briefcase, Mail, Menu, X, ChevronRight
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useCTF } from '../context/CTFContext';
@@ -25,12 +25,12 @@ const mobilePrimaryTabs = [
   { to: '/', label: 'Home', icon: <Home size={20} /> },
   { to: '/projects', label: 'Projects', icon: <FolderOpen size={20} /> },
   { to: '/experience', label: 'Experience', icon: <Briefcase size={20} /> },
-  { to: '/certificates', label: 'Certificates', icon: <Award size={20} /> },
   { to: '/hack', label: 'Hack', icon: <Shield size={20} />, isHack: true },
 ];
 
 // Mobile secondary links shown in the "More" sheet
 const mobileMoreLinks = [
+  { to: '/certificates', label: 'Certificates', icon: <FolderOpen size={20} /> },
   { to: '/about', label: 'About', icon: <User size={20} /> },
   { to: '/contact', label: 'Contact', icon: <Mail size={20} /> },
 ];
