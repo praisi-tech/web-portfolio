@@ -19,7 +19,7 @@ export const experiences = [
     location: 'On-site / Jabodetabek & Kalimantan',
     logo: null,
     image: '/experience/student-ambassador.webp',
-    description: 'Represented President University across multiple regions (Jabodetabek, Pontianak, Balikpapan, and Samarinda), delivering structured campus presentations to high school students and continuous networking relationships with students and other ambassadors, impacting student registration targets.',
+    description: 'Represented President University across multiple regions (Jabodetabek, Pontianak, Balikpapan, and Samarinda), delivering structured campus presentations and QnA to high school students impacting student registration target.',
   },
   {
     id: 3,
