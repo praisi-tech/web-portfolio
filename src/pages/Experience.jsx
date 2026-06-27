@@ -106,12 +106,9 @@ function TimelineItem({ exp, index, openId, setOpenId }) {
   );
 }
 
-const catColors = { Tech: 'emerald', Leadership: 'blue' };
-
 export default function Experience() {
   // accordion state: one open card at a time per section
   const [openLeadId, setOpenLeadId] = useState(null);
-  const [openEduId, setOpenEduId] = useState(null);
 
   return (
     <div className="page-wrapper">

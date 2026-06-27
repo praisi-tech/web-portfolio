@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Moon, Sun, Shield, Home, User, FolderOpen,
-  Briefcase, Mail, Terminal, Menu, X, ChevronRight, Award
+  Briefcase, Mail, Menu, X, ChevronRight, Award
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useCTF } from '../context/CTFContext';

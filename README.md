@@ -6,7 +6,7 @@
 
 **Software Engineer & Cybersecurity Enthusiast**
 
-[![Live Site](https://img.shields.io/badge/Live%20Site-website--portfolio--psi--ten.vercel.app-E25B8B?style=for-the-badge&logo=vercel&logoColor=white)](https://praisilia-portfolio.vercel.app)
+[![Live Site](https://img.shields.io/badge/Live%20Site-praisilia--portfolio.vercel.app-E25B8B?style=for-the-badge&logo=vercel&logoColor=white)](https://praisilia-portfolio.vercel.app)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev)
 [![License](https://img.shields.io/badge/License-MIT-60A5FA?style=for-the-badge)](LICENSE)
@@ -69,19 +69,18 @@ portfolio/
 │   ├── data/
 │   │   ├── certificates.js
 │   │   ├── experience.js
-│   │   ├── projects.js
-│   │   └── writeups.js       # CTF writeup entries
+│   │   └── projects.js
 │   ├── pages/
 │   │   ├── About.jsx
 │   │   ├── CertificateClaim.jsx
+│   │   ├── Certificates.jsx
 │   │   ├── Contact.jsx
 │   │   ├── Experience.jsx
 │   │   ├── HackThePortfolio.jsx  # CTF challenge page
 │   │   ├── Home.jsx
 │   │   ├── NotFound.jsx          # Custom 404 with glitch animation
 │   │   ├── Projects.jsx
-│   │   ├── SecretJourney.jsx
-│   │   └── Writeups.jsx
+│   │   └── SecretJourney.jsx
 │   ├── App.jsx           # Routing + lazy loading
 │   ├── index.css         # Global design tokens + utilities
 │   └── main.jsx
@@ -144,6 +143,7 @@ The `vercel.json` at the project root ensures all routes (e.g. `/about`, `/proje
 | `/about` | About Me | ✅ |
 | `/projects` | Projects | ✅ |
 | `/experience` | Experience | ✅ |
+| `/certificates` | Certificates | ✅ |
 | `/contact` | Contact | ✅ |
 | `/hack` | Hack The Portfolio (CTF) | ❌ |
 | `/secret-journey` | Secret Journey | ❌ |

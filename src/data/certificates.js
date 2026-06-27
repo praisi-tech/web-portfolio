@@ -72,4 +72,12 @@ export const certificates = [
     category: 'Leadership',
     image: '/certificates/mc-impacted.webp',
   },
+  {
+    id: 'cert-workshop-bisnis-ekspor',
+    title: 'Export Business Workshop',
+    issuer: 'Nudira Learning Center',
+    issueDate: '2026',
+    category: 'Leadership',
+    image: '/certificates/workshop-bisnis-ekspor.webp',
+  },
 ];
