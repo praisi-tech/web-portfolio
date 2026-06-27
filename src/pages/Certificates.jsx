@@ -56,7 +56,7 @@ export default function CertificatesPage() {
               {categories.map(cat => (
                 <button
                   key={cat}
-                  className={`projects__cat-btn ${activeCategory === cat ? 'projects__cat-btn--active' : ''}`}
+                  className={`certs__cat-btn ${activeCategory === cat ? 'certs__cat-btn--active' : ''}`}
                   onClick={() => setActiveCategory(cat)}
                 >
                   {cat}
@@ -78,7 +78,7 @@ export default function CertificatesPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.04 }}
-                  onClick={() => window.open(cert.pdf || cert.image, '_blank')}
+                  onClick={() => window.open(cert.image, '_blank')}
                   style={{ cursor: 'pointer' }}
                   title="Click to view full certificate"
                 >

@@ -32,6 +32,31 @@
   gap: 10px;
 }
 
+/* ── Category filter buttons ── */
+.certs__cat-btn {
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: var(--font-body);
+}
+
+.certs__cat-btn:hover {
+  border-color: var(--accent-emerald);
+  color: var(--accent-emerald);
+}
+
+.certs__cat-btn--active {
+  background: var(--gradient-accent);
+  color: white;
+  border-color: transparent;
+}
+
 .certs-page__grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
