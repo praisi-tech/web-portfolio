@@ -21,34 +21,10 @@ const bookIcons = {
 
 const books = [
   {
-    title: 'Makanya Mikir',
-    author: 'Henry Manampiring',
-    category: 'Critical Thinking',
-    description: 'An Indonesian guide to critical thinking, cognitive biases, and logical fallacies to build objective reasoning skills.'
-  },
-  {
-    title: 'Filosofi Teras',
-    author: 'Henry Manampiring',
-    category: 'Philosophy',
-    description: 'An Indonesian guide introducing Stoicism (Stoa philosophy) to build mental resilience and stay calm in chaos.'
-  },
-  {
     title: 'Atomic Habits',
     author: 'James Clear',
     category: 'Productivity',
     description: 'Teaches the power of making tiny 1% daily improvements to build life-changing habits.'
-  },
-  {
-    title: 'The 7 Habits of Highly Effective People',
-    author: 'Stephen R. Covey',
-    category: 'Personal Growth',
-    description: 'A timeless guide to solving personal and professional problems based on core universal principles.'
-  },
-  {
-    title: 'The Magic of Thinking Big',
-    author: 'David J. Schwartz',
-    category: 'Personal Growth',
-    description: 'Teaches the power of setting high goals and believing in oneself to achieve outstanding personal and career success.'
   },
   {
     title: 'Start with Why',
@@ -63,22 +39,34 @@ const books = [
     description: 'Provides practical, legendary advice on how to build relationships, communicate effectively, and inspire trust.'
   },
   {
-    title: 'Cashflow Quadrant',
-    author: 'Robert T. Kiyosaki',
-    category: 'Finance & Business',
-    description: 'Details the four categories of income generation: Employee, Self-Employed, Business Owner, and Investor.'
-  },
-  {
     title: 'Rich Dad Poor Dad',
     author: 'Robert T. Kiyosaki',
     category: 'Finance & Business',
     description: 'Introduces fundamental concepts of financial literacy, asset building, and the mindset shift from employee to investor.'
   },
   {
+    title: 'Cashflow Quadrant',
+    author: 'Robert T. Kiyosaki',
+    category: 'Finance & Business',
+    description: 'Details the four categories of income generation: Employee, Self-Employed, Business Owner, and Investor.'
+  },
+  {
     title: 'You Do You',
     author: 'Fellexandro Ruby',
     category: 'Self-Discovery',
     description: 'A modern guide to understanding your strengths, managing finances, and navigating life through self-experiments.'
+  },
+  {
+    title: 'Makanya, Mikir!',
+    author: 'Abigail Limuria & Cania Citta',
+    category: 'Critical Thinking',
+    description: 'A practical guide to thinking clearly, making life decisions that are more rational and less messy, and minimizing regret through reality mapping, separating facts from preferences, and scientific thinking.'
+  },
+  {
+    title: 'The Magic of Thinking Big',
+    author: 'David J. Schwartz',
+    category: 'Personal Growth',
+    description: 'Teaches the power of setting high goals and believing in oneself to achieve outstanding personal and career success.'
   },
 ];
 
@@ -166,7 +154,7 @@ export default function SecretJourney() {
             <Star size={24} />
             <div>
               <h2>Behind This Portfolio</h2>
-              <p>This portfolio is more than a showcase, it's a live system. The CTF challenges embedded within it reflect my belief that portfolios should <em>demonstrate</em> skills, not just describe them. The particle background, the typewriter effect, and name and certificate system, each piece was a deliberate choice to make something memorable.</p>
+              <p>This portfolio is more than a showcase, it's a live system. The CTF challenges embedded within it reflect my belief that portfolios should <em>demonstrate</em> skills, not just describe them. The particle background, the typewriter effect, the name and certificate system, each piece was a deliberate choice to make something memorable.</p>
               <p style={{ marginTop: 12 }}>The secret journey you've unlocked represents my philosophy: the most interesting paths are the ones that require effort to discover.</p>
               <p style={{ marginTop: 12 }}>
                 Thank you for playing.{' '}

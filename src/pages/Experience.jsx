@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Briefcase, Users, GraduationCap, ChevronDown, MapPin, Award, Search, ExternalLink, Mic } from 'lucide-react';
+import { Briefcase, Users, GraduationCap, ChevronDown, MapPin, Mic } from 'lucide-react';
 import { experiences } from '../data/experience';
-import { certificates } from '../data/certificates';
 import './Experience.css';
 
 const mcEvents = [
@@ -110,20 +109,9 @@ function TimelineItem({ exp, index, openId, setOpenId }) {
 const catColors = { Tech: 'emerald', Leadership: 'blue' };
 
 export default function Experience() {
-  const [certSearch, setCertSearch] = useState('');
-  const [activeCategory, setActiveCategory] = useState('All');
   // accordion state: one open card at a time per section
   const [openLeadId, setOpenLeadId] = useState(null);
   const [openEduId, setOpenEduId] = useState(null);
-
-  const filtered = certificates.filter(c => {
-    const matchCat = activeCategory === 'All' || c.category === activeCategory;
-    const q = certSearch.toLowerCase();
-    const matchSearch = c.title.toLowerCase().includes(q) ||
-      c.issuer.toLowerCase().includes(q) ||
-      c.category.toLowerCase().includes(q);
-    return matchCat && matchSearch;
-  });
 
   return (
     <div className="page-wrapper">
@@ -155,89 +143,6 @@ export default function Experience() {
         </div>
       </section>
 
-
-
-      {/* ── Certifications ── */}
-      <section className="section experience__certs">
-        <div className="container">
-          <motion.div
-            className="section-header"
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <span className="section-label">Credentials</span>
-            <h2 className="section-title">
-              Certifications & <span className="gradient-text">Badges</span>
-            </h2>
-            <p className="section-subtitle">
-              Verified professional credentials across software engineer, cybersecurity and leadership.
-            </p>
-          </motion.div>
-
-          {/* Filters */}
-          <div className="certs-filters">
-            <div className="certs__search-wrap">
-              <Search size={16} className="certs__search-icon" />
-              <input
-                id="cert-search"
-                type="text"
-                placeholder="Search certificates..."
-                value={certSearch}
-                onChange={e => setCertSearch(e.target.value)}
-                className="input certs__search"
-              />
-            </div>
-            <div className="certs-cats">
-              {['All', 'Tech', 'Leadership'].map(cat => (
-                <button
-                  key={cat}
-                  className={`projects__cat-btn ${activeCategory === cat ? 'projects__cat-btn--active' : ''}`}
-                  onClick={() => setActiveCategory(cat)}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Grid */}
-          <div className="certs-page__grid">
-            {filtered.map((cert, i) => (
-              <motion.div
-                key={cert.id}
-                className="cert-page-card card"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
-                onClick={() => window.open(cert.pdf || cert.image, '_blank')}
-                style={{ cursor: 'pointer' }}
-                title="Click to view full certificate"
-              >
-                <div className="cert-page-card__img-wrap">
-                  <img
-                    src={cert.image}
-                    alt={cert.title}
-                    className="cert-page-card__img"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="cert-page-card__body">
-                  <div className="cert-page-card__header" style={{ marginBottom: '4px' }}>
-                    <div className="cert-page-card__icon"><Award size={20} /></div>
-                  </div>
-                  <h3 className="cert-page-card__title">{cert.title}</h3>
-                  <p className="cert-page-card__issuer">{cert.issuer}</p>
-                  <div className="cert-page-card__meta">
-                    <span className="cert-page-card__date">{cert.issueDate}</span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ── Master of Ceremonies ── */}
       <section className="section experience__mc">

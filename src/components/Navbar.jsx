@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Moon, Sun, Shield, Home, User, FolderOpen,
-  Briefcase, Mail, Terminal, Menu, X, ChevronRight
+  Briefcase, Mail, Terminal, Menu, X, ChevronRight, Award
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useCTF } from '../context/CTFContext';
@@ -15,6 +15,7 @@ const desktopLinks = [
   { to: '/about', label: 'About' },
   { to: '/projects', label: 'Projects' },
   { to: '/experience', label: 'Experience' },
+  { to: '/certificates', label: 'Certificates' },
   { to: '/hack', label: 'Hack The Portfolio', icon: <Shield size={13} /> },
   { to: '/contact', label: 'Contact' },
 ];
@@ -24,6 +25,7 @@ const mobilePrimaryTabs = [
   { to: '/', label: 'Home', icon: <Home size={20} /> },
   { to: '/projects', label: 'Projects', icon: <FolderOpen size={20} /> },
   { to: '/experience', label: 'Experience', icon: <Briefcase size={20} /> },
+  { to: '/certificates', label: 'Certificates', icon: <Award size={20} /> },
   { to: '/hack', label: 'Hack', icon: <Shield size={20} />, isHack: true },
 ];
 

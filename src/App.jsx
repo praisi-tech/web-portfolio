@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Projects from './pages/Projects';
 import Experience from './pages/Experience';
+import Certificates from './pages/Certificates';
 import HackThePortfolio from './pages/HackThePortfolio';
 import SecretJourney from './pages/SecretJourney';
 import Contact from './pages/Contact';
@@ -82,6 +83,7 @@ function AppRoutes() {
           <Route path="/about" element={<AnimatedPage><About /></AnimatedPage>} />
           <Route path="/projects" element={<AnimatedPage><Projects /></AnimatedPage>} />
           <Route path="/experience" element={<AnimatedPage><Experience /></AnimatedPage>} />
+          <Route path="/certificates" element={<AnimatedPage><Certificates /></AnimatedPage>} />
           <Route path="/hack" element={<AnimatedPage><HackThePortfolio /></AnimatedPage>} />
           <Route path="/secret-journey" element={<AnimatedPage><SecretJourney /></AnimatedPage>} />
           <Route path="/certificate-claim" element={<AnimatedPage><CertificateClaim /></AnimatedPage>} />
