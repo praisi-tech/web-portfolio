@@ -6,4 +6,4 @@ Disallow: /hack
 Disallow: /secret-journey
 Disallow: /certificate-claim
 
-Sitemap: https://website-portfolio-psi-ten.vercel.app/sitemap.xml
+Sitemap: https://praisilia-portfolio.vercel.app/sitemap.xml

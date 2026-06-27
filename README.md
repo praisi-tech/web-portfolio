@@ -6,7 +6,7 @@
 
 **Software Engineer & Cybersecurity Enthusiast**
 
-[![Live Site](https://img.shields.io/badge/Live%20Site-website--portfolio--psi--ten.vercel.app-E25B8B?style=for-the-badge&logo=vercel&logoColor=white)](https://website-portfolio-psi-ten.vercel.app)
+[![Live Site](https://img.shields.io/badge/Live%20Site-website--portfolio--psi--ten.vercel.app-E25B8B?style=for-the-badge&logo=vercel&logoColor=white)](https://praisilia-portfolio.vercel.app)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev)
 [![License](https://img.shields.io/badge/License-MIT-60A5FA?style=for-the-badge)](LICENSE)
@@ -158,8 +158,8 @@ The `vercel.json` at the project root ensures all routes (e.g. `/about`, `/proje
 
 ## 📈 SEO
 
-- **Sitemap:** [`/sitemap.xml`](https://website-portfolio-psi-ten.vercel.app/sitemap.xml)
-- **Robots:** [`/robots.txt`](https://website-portfolio-psi-ten.vercel.app/robots.txt)
+- **Sitemap:** [`/sitemap.xml`](https://praisilia-portfolio.vercel.app/sitemap.xml)
+- **Robots:** [`/robots.txt`](https://praisilia-portfolio.vercel.app/robots.txt)
 - Submit the sitemap to [Google Search Console](https://search.google.com/search-console) for indexing.
 
 ## 🎨 Design System
