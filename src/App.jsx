@@ -22,27 +22,50 @@ const NotFound         = lazy(() => import('./pages/NotFound'));
 // CertificateClaim also lazy — extra heavy (jspdf + html2canvas)
 const CertificateClaim = lazy(() => import('./pages/CertificateClaim'));
 
-// Minimal page-level loading state (invisible shimmer)
+// Page-level skeleton loader
 function PageLoader() {
   return (
     <div style={{
       minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
       background: 'var(--bg-primary)',
-    }}>
-      <motion.div
-        style={{
-          width: 40,
-          height: 40,
-          borderRadius: '50%',
-          border: '3px solid var(--border-color)',
-          borderTopColor: 'var(--accent-emerald)',
-        }}
-        animate={{ rotate: 360 }}
-        transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
-      />
+      paddingTop: 'calc(var(--navbar-height) + 40px)',
+      paddingBottom: '60px',
+    }} className="container">
+      {/* Header Skeleton */}
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        textAlign: 'center',
+        gap: '12px',
+        marginBottom: '48px',
+      }}>
+        <div className="skeleton-shimmer skeleton-label" style={{ width: '80px' }} />
+        <div className="skeleton-shimmer skeleton-title" style={{ width: '240px', maxWidth: '100%' }} />
+        <div className="skeleton-shimmer skeleton-text" style={{ width: '400px', maxWidth: '100%', height: '14px' }} />
+      </div>
+
+      {/* Grid Skeleton */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+        gap: '24px',
+      }}>
+        {[1, 2, 3].map((n) => (
+          <div key={n} className="skeleton-card">
+            <div className="skeleton-shimmer skeleton-image" />
+            <div className="skeleton-shimmer skeleton-title" style={{ height: '24px', width: '70%' }} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <div className="skeleton-shimmer skeleton-text" style={{ width: '100%' }} />
+              <div className="skeleton-shimmer skeleton-text" style={{ width: '85%' }} />
+            </div>
+            <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+              <div className="skeleton-shimmer skeleton-text" style={{ width: '60px', height: '24px', borderRadius: '9999px' }} />
+              <div className="skeleton-shimmer skeleton-text" style={{ width: '80px', height: '24px', borderRadius: '9999px' }} />
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

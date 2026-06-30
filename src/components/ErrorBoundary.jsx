@@ -32,7 +32,9 @@ export default class ErrorBoundary extends Component {
           <div style={{ fontSize: '2rem' }}>⚠️</div>
           <h2 style={{ fontSize: '1.2rem', fontWeight: 700 }}>Something went wrong while loading this page.</h2>
           <p style={{ fontSize: '0.9rem', color: '#94A3B8', maxWidth: 400 }}>
-            {this.state.error?.message || 'Unknown error'}
+            {import.meta.env.DEV
+              ? (this.state.error?.message || 'Unknown error')
+              : 'An unexpected error occurred. Please try reloading the page.'}
           </p>
           <button
             onClick={() => { this.setState({ hasError: false, error: null }); window.location.reload(); }}
