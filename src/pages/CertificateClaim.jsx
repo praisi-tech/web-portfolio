@@ -156,36 +156,19 @@ export default function CertificateClaim() {
         await document.fonts.ready;
       }
 
-      // Force fixed desktop dimensions off-screen so container queries (cqw) scale properly
-      const originalStyle = certRef.current.style.cssText;
-      certRef.current.style.cssText = `
-        position: fixed !important;
-        top: 0 !important;
-        left: -9999px !important;
-        width: 1122px !important;
-        height: 793px !important;
-        aspect-ratio: 297 / 210 !important;
-        z-index: -9999 !important;
-      `;
-
       // Add temporary class to disable text gradients during rendering
       certRef.current.classList.add('rendering-pdf');
 
-      // Allow a brief frame for browser layout recalculation
-      await new Promise(resolve => setTimeout(resolve, 150));
-
       // Render the cert card element to a high-DPI canvas
       const canvas = await html2canvas(certRef.current, {
-        scale: 2, // 2x is plenty since we capture at 1122px width (results in ~2244px wide image)
+        scale: 3, // Premium print resolution
         useCORS: true,
         allowTaint: true,
         backgroundColor: null,
-        logging: false,
       });
 
-      // Remove temporary class and restore styling immediately after rendering
+      // Remove temporary class immediately after rendering
       certRef.current.classList.remove('rendering-pdf');
-      certRef.current.style.cssText = originalStyle;
 
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });

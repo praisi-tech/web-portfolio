@@ -2,7 +2,7 @@ export const projects = [
   {
     id: 'tana-minahasa',
     name: 'Tana Minahasa',
-    tagline: 'Agricultural Export Platform',
+    tagline: 'Full-Stack Web App Developer',
     thumbnail: '/images/projects/tana-minahasa.webp',
     tech: ['Confidential'],
     description: 'Export business platform that showcases Indonesian agricultural products and streamlines product inquiries for international buyers from North Sulawesi.',
@@ -35,7 +35,7 @@ export const projects = [
   {
     id: 'exopilot',
     name: 'Exopilot',
-    tagline: 'AI-Powered Export Operations Platform',
+    tagline: 'Full-Stack Web App Developer',
     thumbnail: '/images/projects/exopilot.webp',
     tech: ['Next.js 16', 'React 19', 'TypeScript', 'Go', 'Firestore', 'Firebase Auth', 'Google Gemini AI'],
     description: 'AI-powered export documents and trade operations platform that helps SMEs and exporters automate trade workflows, documentation, and business processes.',
@@ -70,7 +70,7 @@ export const projects = [
   {
     id: 'secure-notes',
     name: 'Secure Notes',
-    tagline: 'Encrypted Note-Taking with PIN Protection',
+    tagline: 'Android Mobile App Developer',
     thumbnail: '/images/projects/secure-notes.webp',
     tech: ['Java', 'Android SDK', 'Room Database', 'Android Jetpack', 'Android KeyStore', 'AES-256-GCM Encryption', 'MVVM Architecture', 'Material Design 3'],
     description: 'Privacy-focused note-taking app with AES-256-GCM encryption, PIN authentication, per-note password protection, secure backups, and local-only storage.',
@@ -104,7 +104,7 @@ export const projects = [
   {
     id: 'crypto-waf',
     name: 'Crypto-WAF',
-    tagline: 'Rule-Based Web Application Firewall',
+    tagline: 'Lead Web App Developer',
     thumbnail: '/images/projects/crypto-waf.webp',
     tech: ['Laravel', 'PHP', 'MySQL', 'AES-256-GCM', 'HMAC-SHA256', 'Argon2id', 'REST API', 'Web Application Firewall (WAF)'],
     description: 'Cryptography-enhanced Web Application Firewall (WAF) that detects and blocks web attacks, secures APIs, and encrypts sensitive data.',
@@ -139,7 +139,7 @@ export const projects = [
   {
     id: 'grawizah',
     name: 'Grawizah',
-    tagline: 'Modern Company Profile Website',
+    tagline: 'Product Manager & Quality Assurance',
     thumbnail: '/images/projects/grawizah.webp',
     tech: ['Next.js 14', 'TypeScript', 'Tailwind CSS', 'Go (Golang)', 'Supabase (PostgreSQL)', 'Groq Llama 70B', 'JWT Authentication', 'RS256', 'PostgreSQL'],
     description: 'AI-powered B2B trade intelligence platform that helps exporters discover buyers, qualify leads, and manage RFQs before international deals.',
@@ -172,7 +172,7 @@ export const projects = [
   {
     id: 'iso-shield',
     name: 'ISO-Shield',
-    tagline: 'ISO 27001 Security Compliance Platform',
+    tagline: 'Lead Web App Developer',
     thumbnail: '/images/projects/iso-shield.webp',
     tech: ['Next.js 14', 'TypeScript', 'Supabase', 'PostgreSQL', 'Tailwind CSS', 'Supabase Auth', 'RLS', 'OWASP Top 10', 'ISO 27001'],
     description: 'Security governance platform for ISO 27001 compliance, asset management, and risk analysis to identify gaps and improve security posture.',
@@ -382,7 +382,7 @@ export const projects = [
     takeaways: 'CTF challenges sharpen real-world offensive security skills — each flag represents a vulnerability class that exists in production systems.',
     github: null,
     demo: null,
-    pdf: 'digital-forensic-writeup-ctf.pdf',
+    pdf: 'ctf-writeup.pdf',
     category: 'Security',
     featured: false,
   },

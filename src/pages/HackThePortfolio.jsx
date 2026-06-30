@@ -70,7 +70,7 @@ function Challenge1({ done }) {
     setStatus(ok ? 'ok' : 'fail');
   };
 
-  if (done) return <CompletedBadge flag="curiosity_is_the_first_step" />;
+  if (done) return <CompletedBadge flag="flag{curiosity_is_the_first_step}" />;
 
   return (
     <div className="challenge-body">
@@ -94,7 +94,7 @@ function Challenge1({ done }) {
             <Send size={15} /> Submit
           </button>
         </div>
-        <span className="challenge-input-help">{'Format: lowercase with underscores'}</span>
+        <span className="challenge-input-help">{'Format: flag {} lowercase'}</span>
       </div>
       {status === 'fail' && <div className="challenge-error"><AlertCircle size={16} /> [REJECTED] Invalid token value. Keep investigating the DOM elements!</div>}
     </div>
