@@ -49,10 +49,18 @@ export const certificates = [
     image: '/certificates/ask-questions-coursera.webp',
   },
   {
+    id: 'cert-workshop-bisnis-ekspor',
+    title: 'Export Business Workshop',
+    issuer: 'Nudira Learning Center',
+    issueDate: '2026',
+    category: 'Leadership',
+    image: '/certificates/workshop-bisnis-ekspor.webp',
+  },
+  {
     id: 'cert-activating-leadership',
     title: 'Most Activating Leadership In GAC',
     issuer: 'AIESEC In President University',
-    issueDate: '2025',
+    issueDate: '2024',
     category: 'Leadership',
     image: '/certificates/activating-leadership.webp',
   },
@@ -71,13 +79,5 @@ export const certificates = [
     issueDate: '2025',
     category: 'Leadership',
     image: '/certificates/mc-impacted.webp',
-  },
-  {
-    id: 'cert-workshop-bisnis-ekspor',
-    title: 'Export Business Workshop',
-    issuer: 'Nudira Learning Center',
-    issueDate: '2026',
-    category: 'Leadership',
-    image: '/certificates/workshop-bisnis-ekspor.webp',
   },
 ];
