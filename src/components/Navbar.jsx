@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useCTF } from '../context/CTFContext';
+import { preloadPage } from '../App';
 import './Navbar.css';
 
 // Desktop top nav links
@@ -77,6 +78,8 @@ export default function Navbar() {
                 <Link
                   to={link.to}
                   className={`navbar__link ${isActive(link.to) ? 'navbar__link--active' : ''} ${link.to === '/hack' ? 'navbar__link--hack' : ''}`}
+                  onMouseEnter={() => preloadPage(link.to)}
+                  onFocus={() => preloadPage(link.to)}
                 >
                   {link.icon && link.icon}
                   {link.label}
@@ -121,6 +124,8 @@ export default function Navbar() {
               to={item.to}
               className={`mobile-tab ${isActive(item.to) ? 'mobile-tab--active' : ''} ${item.isHack ? 'mobile-tab--hack' : ''}`}
               aria-label={item.label}
+              onMouseEnter={() => preloadPage(item.to)}
+              onTouchStart={() => preloadPage(item.to)}
             >
               <span className="mobile-tab__icon">
                 {item.icon}
@@ -174,6 +179,8 @@ export default function Navbar() {
                     key={item.to}
                     to={item.to}
                     className={`mobile-sheet__link ${isActive(item.to) ? 'mobile-sheet__link--active' : ''}`}
+                    onMouseEnter={() => preloadPage(item.to)}
+                    onTouchStart={() => preloadPage(item.to)}
                   >
                     <span className="mobile-sheet__link-icon">{item.icon}</span>
                     <span className="mobile-sheet__link-label">{item.label}</span>

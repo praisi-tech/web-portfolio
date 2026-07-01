@@ -3,8 +3,6 @@ import { motion } from 'framer-motion';
 import { Navigate } from 'react-router-dom';
 import { useCTF } from '../context/CTFContext';
 import { Trophy, Download, AlertCircle } from 'lucide-react';
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
 import './CertificateClaim.css';
 
 /* ─── Certificate background SVG ─────────────────────────────────────────────
@@ -64,6 +62,18 @@ export default function CertificateClaim() {
   });
   const [downloading, setDownloading] = useState(false);
   const certRef = useRef(null);
+
+  // Load certificate fonts dynamically when this page is loaded
+  useEffect(() => {
+    const fontLinkId = 'cert-google-fonts';
+    if (!document.getElementById(fontLinkId)) {
+      const link = document.createElement('link');
+      link.id = fontLinkId;
+      link.rel = 'stylesheet';
+      link.href = 'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&display=swap';
+      document.head.appendChild(link);
+    }
+  }, []);
 
   // Mitigation: Security Logging & Alerting + Broken Access Control audit visibility
   useEffect(() => {
@@ -158,6 +168,14 @@ export default function CertificateClaim() {
 
       // Add temporary class to disable text gradients during rendering
       certRef.current.classList.add('rendering-pdf');
+
+      // Dynamically import heavy libraries only when requested to optimize initial load
+      const [html2canvasModule, jsPDFModule] = await Promise.all([
+        import('html2canvas'),
+        import('jspdf'),
+      ]);
+      const html2canvas = html2canvasModule.default;
+      const jsPDF = jsPDFModule.jsPDF;
 
       // Render the cert card element to a high-DPI canvas
       const canvas = await html2canvas(certRef.current, {

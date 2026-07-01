@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Instagram, ArrowRight, User, Lock, Cpu, Trophy, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { preloadPage } from '../App';
 import './Home.css';
+
+// All navigable page routes — prefetch their JS chunks during idle time
+const ALL_ROUTES = ['/about', '/projects', '/experience', '/certificates', '/hack', '/contact'];
 
 const subtitles = ['Software Engineer', 'Cybersecurity Enthusiast', 'Problem Solver', 'Tech Leader', 'Innovation'];
 
@@ -43,6 +47,23 @@ export default function Home() {
     }
     return () => clearTimeout(timeout);
   }, [displayed, typing, subtitleIdx]);
+
+  // Preload all other page chunks during browser idle time so every
+  // subsequent navigation feels instant (sub-100ms).
+  useEffect(() => {
+    if (typeof requestIdleCallback === 'function') {
+      const handle = requestIdleCallback(() => {
+        ALL_ROUTES.forEach(route => preloadPage(route));
+      }, { timeout: 2000 });
+      return () => cancelIdleCallback(handle);
+    } else {
+      // Fallback for Safari: use a short setTimeout instead
+      const t = setTimeout(() => {
+        ALL_ROUTES.forEach(route => preloadPage(route));
+      }, 1500);
+      return () => clearTimeout(t);
+    }
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
