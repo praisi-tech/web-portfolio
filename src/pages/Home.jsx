@@ -182,7 +182,7 @@ export default function Home() {
               {chips.map(c => (
                 <div key={c.cls} className={`hero__chip ${c.cls}`}>
                   {c.icon}
-                  {c.label}
+                  <span className="hero__chip-label">{c.label}</span>
                 </div>
               ))}
             </div>

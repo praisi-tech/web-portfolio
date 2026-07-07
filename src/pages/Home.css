@@ -365,11 +365,9 @@
   .hero__ctas .btn { justify-content: center; }
   /* Show smaller portrait on mobile */
   .hero__portrait-wrapper { width: 180px; height: 180px; }
-  /* Keep chips visible but smaller on small mobile */
-  .hero__chip { 
-    font-size: 0.7rem;
-    padding: 6px 10px;
-    gap: 4px;
+  /* Hide chips completely on mobile */
+  .hero__chip {
+    display: none;
   }
   /* Adjust chip positions for smaller portrait */
   .hero__chip--1 { top: 0; right: -40px; }
