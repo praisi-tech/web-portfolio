@@ -1,15 +1,18 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useTheme } from '../context/ThemeContext';
 
-// Detect mobile/touch to use fewer particles and skip mouse tracking
-const IS_MOBILE = window.matchMedia('(hover: none) and (pointer: coarse)').matches
-  || window.innerWidth < 768;
+// Detect mobile/touch
+const IS_MOBILE = typeof window !== 'undefined' && (
+  window.matchMedia('(hover: none) and (pointer: coarse)').matches
+  || window.innerWidth < 768
+);
 
-const PARTICLE_COUNT = IS_MOBILE ? 20 : 50;
-const MAX_DIST = IS_MOBILE ? 100 : 140;
+// Optimize particle counts on mobile to prevent performance lag
+const PARTICLE_COUNT = IS_MOBILE ? 12 : 50;
+const MAX_DIST = IS_MOBILE ? 90 : 140;
 const MOUSE_ATTRACT_RADIUS = 220;
 const MOUSE_ATTRACT_STRENGTH = 0.018;
-const BASE_SPEED = IS_MOBILE ? 0.3 : 0.45;
+const BASE_SPEED = IS_MOBILE ? 0.25 : 0.45;
 
 function createParticle(w, h) {
   const angle = Math.random() * Math.PI * 2;
@@ -36,7 +39,7 @@ export default function ParticleBackground() {
   });
   const { theme } = useTheme();
 
-  // Soft pink + soft blue palette (no purple)
+  // Soft pink + soft blue palette
   const colors = theme === 'dark'
     ? ['#FF7DA8', '#60A5FA', '#93C5FD', '#FFAEC9', '#7DD3FC']
     : ['#E25B8B', '#3B82F6', '#60A5FA', '#F78CB3', '#93C5FD'];
@@ -50,21 +53,17 @@ export default function ParticleBackground() {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
-    // Reset mouse to inactive if stationary for more than 3 seconds
+    // Reset mouse to inactive if stationary
     if (Date.now() - s.lastMouseMove > 3000) {
       s.mouse = { x: -9999, y: -9999 };
     }
 
     const { w, h, particles, mouse } = s;
 
-    // Safety guard: skip drawing if dimensions are invalid or too small
     if (!w || !h || w < 20 || h < 20) {
       s.animId = requestAnimationFrame(draw);
       return;
     }
-
-    const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches
-      || window.innerWidth < 768;
 
     ctx.clearRect(0, 0, w, h);
 
@@ -77,7 +76,7 @@ export default function ParticleBackground() {
       const p = particles[i];
 
       // Mouse attraction — only on desktop
-      if (!isMobile) {
+      if (!IS_MOBILE) {
         const dx = mouse.x - p.x;
         const dy = mouse.y - p.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -95,7 +94,7 @@ export default function ParticleBackground() {
           p.vy = (p.vy / speed) * maxSpeed;
         }
 
-        // Gradually return to base speed when far from mouse
+        // Return to base speed when far
         if (dist >= MOUSE_ATTRACT_RADIUS) {
           p.vx *= 0.995;
           p.vy *= 0.995;
@@ -110,7 +109,7 @@ export default function ParticleBackground() {
       p.x += p.vx;
       p.y += p.vy;
 
-      // Bounce off edges (even spread, no accumulation)
+      // Bounce off edges
       if (p.x < p.radius) {
         p.x = p.radius;
         p.vx = Math.abs(p.vx);
@@ -136,29 +135,33 @@ export default function ParticleBackground() {
       ctx.globalAlpha = 1;
     }
 
-    // Draw connections between nearby particles
+    // Draw connections between nearby particles (Optimized connection loop)
+    const maxDistSq = MAX_DIST * MAX_DIST;
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
         const a = particles[i];
         const b = particles[j];
         const dx = a.x - b.x;
         const dy = a.y - b.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < MAX_DIST) {
-          const alpha = (1 - dist / MAX_DIST) * 0.25;
+        
+        // Fast squared distance check to avoid Math.sqrt calls on mobile/desktop
+        const distSq = dx * dx + dy * dy;
+        if (distSq < maxDistSq) {
+          const dist = Math.sqrt(distSq);
+          const alpha = (1 - dist / MAX_DIST) * 0.22;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(b.x, b.y);
           ctx.strokeStyle = colorsList[i % colorsList.length];
           ctx.globalAlpha = alpha;
-          ctx.lineWidth = 0.8;
+          ctx.lineWidth = IS_MOBILE ? 0.6 : 0.8;
           ctx.stroke();
           ctx.globalAlpha = 1;
         }
       }
 
-      // Lines from particle to cursor — desktop only
-      if (!isMobile && mouse.x > 0 && mouse.y > 0) {
+      // Lines to cursor — desktop only
+      if (!IS_MOBILE && mouse.x > 0 && mouse.y > 0) {
         const a = particles[i];
         const mdx = a.x - mouse.x;
         const mdy = a.y - mouse.y;
@@ -178,7 +181,7 @@ export default function ParticleBackground() {
     }
 
     // Soft glow at cursor — desktop only
-    if (!isMobile && mouse.x > 0 && mouse.y > 0) {
+    if (!IS_MOBILE && mouse.x > 0 && mouse.y > 0) {
       const glowColor = theme === 'dark'
         ? 'rgba(255,125,168,0.15)'
         : 'rgba(226,91,139,0.12)';
@@ -192,21 +195,27 @@ export default function ParticleBackground() {
     }
 
     s.animId = requestAnimationFrame(draw);
-  }, [theme]);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    let animTimer;
+
     const resize = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
       
-      // Safety guard: ignore invalid or tiny dimensions (like when tab/app goes backgrounded)
       if (!w || !h || w < 20 || h < 20) return;
 
       const oldW = stateRef.current.w;
       const oldH = stateRef.current.h;
+
+      // Ignore vertical-only height changes on mobile to prevent URL address bar scroll resizing lag
+      if (IS_MOBILE && oldW > 0 && w === oldW) {
+        return;
+      }
 
       canvas.width = w;
       canvas.height = h;
@@ -219,7 +228,6 @@ export default function ParticleBackground() {
           () => createParticle(w, h)
         );
       } else if (oldW > 0 && oldH > 0) {
-        // Proportional resizing: translate coordinates to fit new window dimensions
         stateRef.current.particles.forEach(p => {
           p.x = (p.x / oldW) * w;
           p.y = (p.y / oldH) * h;
@@ -227,16 +235,17 @@ export default function ParticleBackground() {
       }
     };
 
+    // Delay canvas processing start by 150ms to yield thread for FCP/LCP paint
+    animTimer = setTimeout(() => {
+      resize();
+      stateRef.current.animId = requestAnimationFrame(draw);
+    }, 150);
+
     const onMouseMove = (e) => {
-      const isMobile = window.matchMedia('(hover: none) and (pointer: coarse)').matches
-        || window.innerWidth < 768;
-      
-      // Skip if mobile or touch interaction
-      if (isMobile || e.pointerType === 'touch' || e.pointerType === 'pen') {
+      if (IS_MOBILE || e.pointerType === 'touch' || e.pointerType === 'pen') {
         stateRef.current.mouse = { x: -9999, y: -9999 };
         return;
       }
-      
       stateRef.current.mouse = { x: e.clientX, y: e.clientY };
       stateRef.current.lastMouseMove = Date.now();
     };
@@ -245,25 +254,20 @@ export default function ParticleBackground() {
       stateRef.current.mouse = { x: -9999, y: -9999 };
     };
 
-    resize();
     window.addEventListener('resize', resize);
-
-    // Register mouse listeners (touch events are filtered inside onMouseMove)
     window.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseleave', onMouseLeave);
 
-    // Pause animation when tab is not visible (saves battery)
     const handleVisibility = () => {
       cancelAnimationFrame(stateRef.current.animId);
-      if (!document.hidden) {
+      if (!document.hidden && stateRef.current.w > 0) {
         stateRef.current.animId = requestAnimationFrame(draw);
       }
     };
     document.addEventListener('visibilitychange', handleVisibility);
 
-    stateRef.current.animId = requestAnimationFrame(draw);
-
     return () => {
+      clearTimeout(animTimer);
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseleave', onMouseLeave);

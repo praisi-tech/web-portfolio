@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Award, Search } from 'lucide-react';
 import { certificates } from '../data/certificates';
+import { useImagePreview } from '../context/ImagePreviewContext';
 import './Certificates.css';
 
 const categories = ['All', 'Tech', 'Leadership'];
@@ -9,6 +10,7 @@ const categories = ['All', 'Tech', 'Leadership'];
 export default function CertificatesPage() {
   const [certSearch, setCertSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
+  const { openPreview } = useImagePreview();
 
   const filtered = certificates.filter(cert => {
     const matchCat = activeCategory === 'All' || cert.category === activeCategory;
@@ -19,6 +21,9 @@ export default function CertificatesPage() {
 
     return matchCat && matchSearch;
   });
+
+  const achievements = filtered.filter(item => item.type === 'achievement');
+  const certsOnly = filtered.filter(item => item.type === 'certificate');
 
   return (
     <div className="page-wrapper">
@@ -32,10 +37,10 @@ export default function CertificatesPage() {
           >
             <span className="section-label">Credentials</span>
             <h1 className="section-title">
-              Certificates & <span className="gradient-text">Badges</span>
+              Achievements & <span className="gradient-text">Certificates</span>
             </h1>
             <p className="section-subtitle">
-              A curated collection of my verified professional credentials and achievements.
+              A curated collection of my professional achievements, awards, and verified credentials.
             </p>
           </motion.div>
 
@@ -45,7 +50,7 @@ export default function CertificatesPage() {
               <input
                 id="cert-search"
                 type="text"
-                placeholder="Search certificates..."
+                placeholder="Search credentials..."
                 value={certSearch}
                 onChange={(e) => setCertSearch(e.target.value)}
                 className="input certs__search"
@@ -67,41 +72,93 @@ export default function CertificatesPage() {
 
           {filtered.length === 0 ? (
             <div className="certs-empty card">
-              <p>No certificates match your current search.</p>
+              <p>No achievements or certificates match your search query.</p>
             </div>
           ) : (
-            <div className="certs-page__grid">
-              {filtered.map((cert, i) => (
-                <motion.div
-                  key={cert.id}
-                  className="cert-page-card card"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.04 }}
-                  onClick={() => window.open(cert.image, '_blank', 'noopener,noreferrer')}
-                  style={{ cursor: 'pointer' }}
-                  title="Click to view full certificate"
-                >
-                  <div className="cert-page-card__img-wrap">
-                    <img
-                      src={cert.image}
-                      alt={cert.title}
-                      className="cert-page-card__img"
-                      loading="lazy"
-                    />
+            <div className="certs-sections-container">
+              {/* Achievements Section */}
+              {achievements.length > 0 && (
+                <div className="certs-section">
+                  <h2 className="certs__section-title">
+                    Key <span className="gradient-text">Achievements</span>
+                  </h2>
+                  <div className="certs-page__grid" style={{ marginBottom: '40px' }}>
+                    {achievements.map((item, i) => (
+                      <motion.div
+                        key={item.id}
+                        className="cert-page-card card"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.04 }}
+                        onClick={() => openPreview(item.image, item.title, item.title, `${item.issuer} • ${item.issueDate}`)}
+                        style={{ cursor: 'pointer' }}
+                        title="Click to view details"
+                      >
+                        <div className="cert-page-card__img-wrap">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="cert-page-card__img"
+                            loading="lazy"
+                          />
+                        </div>
+                        <div className="cert-page-card__body">
+                          <div className="cert-page-card__header">
+                            <div className="cert-page-card__icon"><Award size={20} /></div>
+                          </div>
+                          <h3 className="cert-page-card__title">{item.title}</h3>
+                          <p className="cert-page-card__issuer">{item.issuer}</p>
+                          <div className="cert-page-card__meta">
+                            <span className="cert-page-card__date">{item.issueDate}</span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
-                  <div className="cert-page-card__body">
-                    <div className="cert-page-card__header">
-                      <div className="cert-page-card__icon"><Award size={20} /></div>
-                    </div>
-                    <h3 className="cert-page-card__title">{cert.title}</h3>
-                    <p className="cert-page-card__issuer">{cert.issuer}</p>
-                    <div className="cert-page-card__meta">
-                      <span className="cert-page-card__date">{cert.issueDate}</span>
-                    </div>
+                </div>
+              )}
+
+              {/* Certificates Section */}
+              {certsOnly.length > 0 && (
+                <div className="certs-section">
+                  <h2 className="certs__section-title">
+                    Professional <span className="gradient-text">Certificates</span>
+                  </h2>
+                  <div className="certs-page__grid">
+                    {certsOnly.map((item, i) => (
+                      <motion.div
+                        key={item.id}
+                        className="cert-page-card card"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.04 }}
+                        onClick={() => openPreview(item.image, item.title, item.title, `${item.issuer} • ${item.issueDate}`)}
+                        style={{ cursor: 'pointer' }}
+                        title="Click to view details"
+                      >
+                        <div className="cert-page-card__img-wrap">
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="cert-page-card__img"
+                            loading="lazy"
+                          />
+                        </div>
+                        <div className="cert-page-card__body">
+                          <div className="cert-page-card__header">
+                            <div className="cert-page-card__icon"><Award size={20} /></div>
+                          </div>
+                          <h3 className="cert-page-card__title">{item.title}</h3>
+                          <p className="cert-page-card__issuer">{item.issuer}</p>
+                          <div className="cert-page-card__meta">
+                            <span className="cert-page-card__date">{item.issueDate}</span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
-                </motion.div>
-              ))}
+                </div>
+              )}
             </div>
           )}
         </div>

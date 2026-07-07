@@ -7,10 +7,13 @@
   margin-bottom: 72px;
 }
 
-/* Portrait */
 .about__portrait-wrap {
   position: relative;
   flex-shrink: 0;
+  transition: transform var(--transition);
+}
+.about__portrait-wrap:hover {
+  transform: translateY(-4px);
 }
 .about__portrait-ring {
   position: absolute;

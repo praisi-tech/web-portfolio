@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Briefcase, Users, GraduationCap, ChevronDown, MapPin, Mic } from 'lucide-react';
 import { experiences } from '../data/experience';
+import { useImagePreview } from '../context/ImagePreviewContext';
 import './Experience.css';
 
 const mcEvents = [
@@ -45,6 +46,7 @@ const typeIcon = {
 const typeColor = { work: 'emerald', organization: 'blue', education: 'purple' };
 
 function TimelineItem({ exp, index, openId, setOpenId }) {
+  const { openPreview } = useImagePreview();
   const open = openId === exp.id;
   const color = typeColor[exp.type];
   const isRight = index % 2 === 1;
@@ -69,7 +71,14 @@ function TimelineItem({ exp, index, openId, setOpenId }) {
       <div className="timeline-card card" onClick={handleClick}>
         {/* Photo banner */}
         {exp.image && (
-          <div className="timeline-card__img-wrap">
+          <div
+            className="timeline-card__img-wrap"
+            style={{ cursor: 'zoom-in' }}
+            onClick={(e) => {
+              e.stopPropagation();
+              openPreview(exp.image, exp.organization, exp.position, `${exp.organization} • ${exp.location}`);
+            }}
+          >
             <img src={exp.image} alt={exp.organization} className="timeline-card__img" loading="lazy" />
             <div className="timeline-card__img-overlay" />
           </div>

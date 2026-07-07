@@ -16,7 +16,7 @@ const desktopLinks = [
   { to: '/about', label: 'About' },
   { to: '/projects', label: 'Projects' },
   { to: '/experience', label: 'Experience' },
-  { to: '/certificates', label: 'Certificates' },
+  { to: '/achievements', label: 'Achievements' },
   { to: '/hack', label: 'Hack The Portfolio', icon: <Shield size={13} /> },
   { to: '/contact', label: 'Contact' },
 ];
@@ -31,7 +31,7 @@ const mobilePrimaryTabs = [
 
 // Mobile secondary links shown in the "More" sheet
 const mobileMoreLinks = [
-  { to: '/certificates', label: 'Certificates', icon: <FolderOpen size={20} /> },
+  { to: '/achievements', label: 'Achievements', icon: <FolderOpen size={20} /> },
   { to: '/about', label: 'About', icon: <User size={20} /> },
   { to: '/contact', label: 'Contact', icon: <Mail size={20} /> },
 ];

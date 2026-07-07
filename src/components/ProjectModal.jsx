@@ -1,9 +1,11 @@
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Github, ExternalLink, Eye, FileText } from 'lucide-react';
+import { useImagePreview } from '../context/ImagePreviewContext';
 import './ProjectModal.css';
 
 export default function ProjectModal({ project, onClose }) {
+  const { openPreview } = useImagePreview();
   if (!project) return null;
 
   const handlePdfPreview = () => {
@@ -33,7 +35,12 @@ export default function ProjectModal({ project, onClose }) {
 
         {/* Hero Image */}
         {project.thumbnail && (
-          <div className="modal-hero" style={{ cursor: 'zoom-in' }} onClick={() => window.open(project.thumbnail, '_blank')} title="Click to view full image">
+          <div
+            className="modal-hero"
+            style={{ cursor: 'zoom-in' }}
+            onClick={() => openPreview(project.thumbnail, project.name, project.name, project.tagline)}
+            title="Click to view full image"
+          >
             <img src={project.thumbnail} alt={project.name} className="modal-hero-img" />
           </div>
         )}

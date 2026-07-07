@@ -5,6 +5,7 @@ import {
   UserCheck, Handshake, FileText, TrendingUp, Mic, Volume2, MessageSquare, Presentation, Calendar,
   Search, Wifi
 } from 'lucide-react';
+import { useImagePreview } from '../context/ImagePreviewContext';
 import './About.css';
 
 const lucideIcons = {
@@ -125,6 +126,7 @@ const fadeUp = {
 };
 
 export default function About() {
+  const { openPreview } = useImagePreview();
   return (
     <div className="page-wrapper">
       <section className="section about">
@@ -139,7 +141,12 @@ export default function About() {
             viewport={{ once: true }}
           >
             {/* Portrait */}
-            <motion.div className="about__portrait-wrap" variants={fadeUp}>
+            <motion.div
+              className="about__portrait-wrap"
+              variants={fadeUp}
+              style={{ cursor: 'zoom-in' }}
+              onClick={() => openPreview('/profile/about-foto.webp', 'Praisilia Anastasya', 'Praisilia Anastasya', 'Software Engineer & Cybersecurity Enthusiast')}
+            >
               <div className="about__portrait-ring" />
               <img
                 src="/profile/about-foto.webp"

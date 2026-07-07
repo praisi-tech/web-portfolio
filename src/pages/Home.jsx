@@ -3,10 +3,11 @@ import { motion } from 'framer-motion';
 import { Github, Linkedin, Instagram, ArrowRight, User, Lock, Cpu, Trophy, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { preloadPage } from '../App';
+import { useImagePreview } from '../context/ImagePreviewContext';
 import './Home.css';
 
 // All navigable page routes — prefetch their JS chunks during idle time
-const ALL_ROUTES = ['/about', '/projects', '/experience', '/certificates', '/hack', '/contact'];
+const ALL_ROUTES = ['/about', '/projects', '/experience', '/achievements', '/hack', '/contact'];
 
 const subtitles = ['Software Engineer', 'Cybersecurity Enthusiast', 'Problem Solver', 'Tech Leader', 'Innovation'];
 
@@ -27,8 +28,18 @@ export default function Home() {
   const [subtitleIdx, setSubtitleIdx] = useState(0);
   const [displayed, setDisplayed] = useState('');
   const [typing, setTyping] = useState(true);
+  const { openPreview } = useImagePreview();
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 600);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
     const current = subtitles[subtitleIdx];
     let timeout;
     if (typing) {
@@ -46,23 +57,21 @@ export default function Home() {
       }
     }
     return () => clearTimeout(timeout);
-  }, [displayed, typing, subtitleIdx]);
+  }, [displayed, typing, subtitleIdx, isMobile]);
 
-  // Preload all other page chunks during browser idle time so every
-  // subsequent navigation feels instant (sub-100ms).
+  // Preload all other page chunks after a delay so it does not compete with home page assets
   useEffect(() => {
-    if (typeof requestIdleCallback === 'function') {
-      const handle = requestIdleCallback(() => {
+    const timer = setTimeout(() => {
+      if (typeof requestIdleCallback === 'function') {
+        requestIdleCallback(() => {
+          ALL_ROUTES.forEach(route => preloadPage(route));
+        });
+      } else {
         ALL_ROUTES.forEach(route => preloadPage(route));
-      }, { timeout: 2000 });
-      return () => cancelIdleCallback(handle);
-    } else {
-      // Fallback for Safari: use a short setTimeout instead
-      const t = setTimeout(() => {
-        ALL_ROUTES.forEach(route => preloadPage(route));
-      }, 1500);
-      return () => clearTimeout(t);
-    }
+      }
+    }, 4000); // 4 seconds delay ensures initial page load is fully finished first
+
+    return () => clearTimeout(timer);
   }, []);
 
   const containerVariants = {
@@ -156,7 +165,11 @@ export default function Home() {
             <div className="hero__portrait-wrapper animate-float">
               <div className="hero__portrait-ring hero__portrait-ring--outer animate-spin-slow" />
               <div className="hero__portrait-ring hero__portrait-ring--inner" />
-              <div className="hero__portrait">
+              <div
+                className="hero__portrait"
+                style={{ cursor: 'zoom-in' }}
+                onClick={() => openPreview('/profile/Praisilia-home.webp', 'Praisilia Anastasya', 'Praisilia Anastasya', 'Software Engineer & Cybersecurity Enthusiast')}
+              >
                 <img
                   src="/profile/Praisilia-home.webp"
                   alt="Praisilia Anastasya"
