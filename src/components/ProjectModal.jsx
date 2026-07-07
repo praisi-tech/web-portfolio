@@ -1,6 +1,6 @@
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Github, ExternalLink, Eye, FileText } from 'lucide-react';
+import { X, Github, ExternalLink, Eye, FileText, AlertCircle, Briefcase, Zap, Wrench } from 'lucide-react';
 import { useImagePreview } from '../context/ImagePreviewContext';
 import './ProjectModal.css';
 
@@ -59,9 +59,41 @@ export default function ProjectModal({ project, onClose }) {
             {/* Description */}
             <p className="modal-description">{project.description}</p>
 
+            {/* Project Details (Problem, Role, Key Decision) */}
+            {(project.problemSolved || project.specificRole || project.keyDecision) && (
+              <div className="modal-meta-details">
+                {project.problemSolved && (
+                  <div className="modal-meta-item">
+                    <span className="modal-meta-label">
+                      <AlertCircle size={14} className="modal-meta-icon" /> The Problem
+                    </span>
+                    <p className="modal-meta-value">{project.problemSolved}</p>
+                  </div>
+                )}
+                {project.specificRole && (
+                  <div className="modal-meta-item">
+                    <span className="modal-meta-label">
+                      <Briefcase size={14} className="modal-meta-icon" /> Specific Role
+                    </span>
+                    <p className="modal-meta-value">{project.specificRole}</p>
+                  </div>
+                )}
+                {project.keyDecision && (
+                  <div className="modal-meta-item">
+                    <span className="modal-meta-label">
+                      <Zap size={14} className="modal-meta-icon" /> Key Decision
+                    </span>
+                    <p className="modal-meta-value">{project.keyDecision}</p>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Tech Stack */}
             <section className="modal-section">
-              <h3 className="modal-section-title">🛠 Technology Stack</h3>
+              <h3 className="modal-section-title">
+                <Wrench size={14} className="modal-section-icon" /> Technology Stack
+              </h3>
               <div className="modal-tags">
                 {project.tech.map(t => (
                   <span key={t} className="modal-tech-tag">{t}</span>

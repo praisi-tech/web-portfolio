@@ -136,12 +136,20 @@
 
 /* ─── Section ─────────────────────────────────────── */
 .modal-section-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: 0.85rem;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 12px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
+}
+
+.modal-section-icon {
+  color: var(--accent-blue);
+  flex-shrink: 0;
 }
 
 /* ─── Tech Tags ───────────────────────────────────── */
@@ -158,16 +166,21 @@
   border-radius: var(--radius-full);
   font-size: 0.8rem;
   font-weight: 600;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
+  background: rgba(28, 43, 71, 0.03);
+  border: 1px solid rgba(28, 43, 71, 0.06);
+  color: var(--text-primary);
   transition: all 0.2s ease;
 }
 
+[data-theme="dark"] .modal-tech-tag {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
 .modal-tech-tag:hover {
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  border-color: var(--border-strong);
+  background: var(--text-primary);
+  color: var(--bg-secondary);
+  border-color: var(--text-primary);
   transform: translateY(-1px);
 }
 
@@ -218,13 +231,16 @@
   .modal-panel.has-hero {
     max-width: 850px;
     display: grid;
-    grid-template-columns: 1.15fr 1fr;
-    max-height: min(580px, 85vh);
-    overflow: hidden;
+    grid-template-columns: 1.12fr 1fr;
+    max-height: min(680px, 90vh);
+    overflow-y: auto;
+    align-items: start;
   }
 
   .modal-hero {
-    height: 100%;
+    position: sticky;
+    top: 0;
+    height: min(680px, 90vh);
     border-bottom: none;
     border-right: 1px solid var(--border-color);
   }
@@ -233,16 +249,14 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
-    padding: 20px;
+    padding: 24px;
   }
 
   .modal-info {
     display: flex;
     flex-direction: column;
-    height: 100%;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border-strong) transparent;
+    height: auto;
+    overflow-y: visible;
   }
 }
 
@@ -316,4 +330,58 @@
     width: 32px;
     height: 32px;
   }
+
+  .modal-meta-details {
+    padding: 14px;
+    gap: 12px;
+  }
+
+  .modal-meta-value {
+    font-size: 0.8rem;
+  }
+}
+
+/* ─── Meta Details (Problem, Role, Decision) ──────── */
+.modal-meta-details {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: rgba(28, 43, 71, 0.03);
+  border: 1px solid rgba(28, 43, 71, 0.06);
+  padding: 20px;
+  border-radius: var(--radius-md);
+  margin-top: 4px;
+}
+
+[data-theme="dark"] .modal-meta-details {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.modal-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal-meta-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+}
+
+.modal-meta-icon {
+  color: var(--accent-blue);
+  flex-shrink: 0;
+}
+
+.modal-meta-value {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
 }
