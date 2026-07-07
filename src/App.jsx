@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback } from 'react';
+import { lazy, Suspense, useCallback, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ThemeProvider } from './context/ThemeContext';
@@ -71,9 +71,69 @@ function AnimatedPage({ children }) {
   );
 }
 
+// ─── SEO Page Metadata Map ───────────────────────────────────────────────────
+const PAGE_METADATA = {
+  '/': {
+    title: 'Praisilia Anastasya | Software Engineer & Cybersecurity Enthusiast',
+    description: 'Praisilia Anastasya — Software Engineer & Cybersecurity Enthusiast. Building secure, impactful digital products. President University, Indonesia.'
+  },
+  '/about': {
+    title: 'About | Praisilia Anastasya',
+    description: 'Learn more about Praisilia Anastasya, her journey, skills, and background in Software Engineering and Cybersecurity.'
+  },
+  '/projects': {
+    title: 'Projects | Praisilia Anastasya',
+    description: 'Explore the software development and cybersecurity projects built by Praisilia Anastasya, featuring tech stacks like React, Next.js, Go, and Laravel.'
+  },
+  '/experience': {
+    title: 'Experience | Praisilia Anastasya',
+    description: 'Read about Praisilia Anastasya\'s professional experience, technical roles, leadership activities, and educational background.'
+  },
+  '/achievements': {
+    title: 'Achievements & Certificates | Praisilia Anastasya',
+    description: 'View the achievements, hackathon wins, and professional certificates earned by Praisilia Anastasya in cybersecurity and engineering.'
+  },
+  '/contact': {
+    title: 'Contact | Praisilia Anastasya',
+    description: 'Get in touch with Praisilia Anastasya for inquiries, collaborations, or internship opportunities.'
+  }
+};
+
 // ─── Routes ──────────────────────────────────────────────────────────────────
 function AppRoutes() {
   const location = useLocation();
+
+  useEffect(() => {
+    const meta = PAGE_METADATA[location.pathname] || PAGE_METADATA['/'];
+    document.title = meta.title;
+
+    // Update Meta Description
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', meta.description);
+
+    // Update Canonical Link
+    const canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (canonicalLink) {
+      canonicalLink.setAttribute('href', `https://praisilia-portfolio.vercel.app${location.pathname}`);
+    }
+
+    // Update Open Graph
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', meta.title);
+
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', meta.description);
+
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.setAttribute('content', `https://praisilia-portfolio.vercel.app${location.pathname}`);
+
+    // Update Twitter
+    const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+    if (twitterTitle) twitterTitle.setAttribute('content', meta.title);
+
+    const twitterDesc = document.querySelector('meta[name="twitter:description"]');
+    if (twitterDesc) twitterDesc.setAttribute('content', meta.description);
+  }, [location.pathname]);
 
   return (
     <Suspense fallback={<SilentFallback />}>
