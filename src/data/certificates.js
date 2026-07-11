@@ -126,4 +126,13 @@ export const certificates = [
     image: '/certificates/mc-impacted.webp',
     type: 'certificate',
   },
+  {
+    id: 'cert-talent-analyst-staff',
+    title: 'Talent Analyst Staff of Talent Management',
+    issuer: 'AIESEC in President University',
+    issueDate: '2025',
+    category: 'Leadership',
+    image: '/certificates/talent-analyst-staff.webp',
+    type: 'certificate',
+  },
 ];
