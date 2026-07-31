@@ -104,9 +104,9 @@ function Challenge1({ done }) {
 
 /* ─── Challenge 2: OSINT ─── */
 const osintQuestions = [
-  { q: 'What organization shaped Praisilia\'s leadership journey?', answer: 'aiesec', placeholder: 'united nations' },
-  { q: 'What agricultural export platform is Praisilia building?', answer: 'tana minahasa', placeholder: 'sayurbox' },
-  { q: 'What field of study is Praisilia pursuing?', answer: 'information technology', placeholder: 'computer science' },
+  { q: 'What organization shaped Praisilia\'s leadership journey?', answer: 'aiesec' },
+  { q: 'What agricultural export platform is Praisilia building?', answer: 'tana minahasa' },
+  { q: 'What field of study is Praisilia pursuing?', answer: 'information technology' },
 ];
 
 function Challenge2({ done }) {
@@ -151,7 +151,7 @@ function Challenge2({ done }) {
               setSubmitted(false);
             }}
           />
-          <span className="challenge-input-help">Expected format: lowercase (e.g. {q.placeholder})</span>
+          <span className="challenge-input-help">Expected format: {q.placeholder} (format: {q.answer})</span>
         </div>
       ))}
       <div className="challenge-input-row">
