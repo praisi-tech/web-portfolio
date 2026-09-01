@@ -209,9 +209,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary {
-  background: var(--gradient-accent);
+  background: var(--accent-emerald);
   color: #fff;
-  box-shadow: var(--shadow-glow);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent-emerald) 35%, transparent);
 }
 
 .btn-secondary {
@@ -231,7 +231,8 @@ h1, h2, h3, h4, h5, h6 {
 @media (hover: hover) {
   .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(226,91,139,0.35);
+    background: var(--accent-emerald-dark);
+    box-shadow: 0 6px 20px color-mix(in srgb, var(--accent-emerald) 45%, transparent);
   }
   .btn-secondary:hover {
     background: var(--bg-card);

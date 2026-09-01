@@ -52,7 +52,7 @@
 }
 
 .certs__cat-btn--active {
-  background: var(--gradient-accent);
+  background: var(--accent-emerald);
   color: white;
   border-color: transparent;
 }
