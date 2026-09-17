@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Instagram, ArrowRight, User, Lock, Cpu, Trophy, Shield } from 'lucide-react';
+import { Github, Linkedin, Instagram, ArrowRight, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { preloadPage } from '../App';
 import { useImagePreview } from '../context/ImagePreviewContext';
@@ -17,12 +17,6 @@ const socials = [
   { icon: <Instagram size={20} />, label: 'Instagram', href: 'https://www.instagram.com/thruhlens_', id: 'social-instagram' },
 ];
 
-// Floating chips using Lucide icons (no emoji)
-const chips = [
-  { icon: <Lock size={14} />, label: 'Cybersecurity', cls: 'hero__chip--1' },
-  { icon: <Cpu size={14} />, label: 'Software Eng.', cls: 'hero__chip--2' },
-  { icon: <Trophy size={14} />, label: 'CTF Player', cls: 'hero__chip--3' },
-];
 
 export default function Home() {
   const [subtitleIdx, setSubtitleIdx] = useState(0);
@@ -178,13 +172,7 @@ export default function Home() {
                   decoding="async"
                 />
               </div>
-              {/* Floating chips — Lucide icons only */}
-              {chips.map(c => (
-                <div key={c.cls} className={`hero__chip ${c.cls}`}>
-                  {c.icon}
-                  <span className="hero__chip-label">{c.label}</span>
-                </div>
-              ))}
+
             </div>
           </motion.div>
         </div>
