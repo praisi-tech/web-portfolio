@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Moon, Sun, Shield, Home, User, FolderOpen,
-  Briefcase, Mail, Menu, X, ChevronRight
+  Briefcase, Mail, Menu, X, ChevronRight, ArrowUpRight
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useCTF } from '../context/CTFContext';
@@ -18,7 +18,6 @@ const desktopLinks = [
   { to: '/experience', label: 'Experience' },
   { to: '/achievements', label: 'Achievements' },
   { to: '/hack', label: 'Hack The Portfolio', icon: <Shield size={13} /> },
-  { to: '/contact', label: 'Contact' },
 ];
 
 // Mobile primary tabs (4 visible)
@@ -66,9 +65,8 @@ export default function Navbar() {
         <div className="container navbar__inner">
           {/* Logo */}
           <Link to="/" className="navbar__logo">
-            <span className="navbar__logo-bracket">&lt;</span>
-            <span className="navbar__logo-name">praisi</span>
-            <span className="navbar__logo-bracket">/&gt;</span>
+            <span className="navbar__logo-name">Praisilia</span>
+            <span className="navbar__logo-bracket">°</span>
           </Link>
 
           {/* Desktop Links */}
@@ -93,6 +91,13 @@ export default function Navbar() {
 
           {/* Theme toggle (desktop) */}
           <div className="navbar__actions">
+            <Link
+              to="/contact"
+              className="navbar__cta"
+              onMouseEnter={() => preloadPage('/contact')}
+            >
+              Contact <ArrowUpRight size={14} />
+            </Link>
             <button
               id="theme-toggle"
               className="navbar__icon-btn"

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Instagram, ArrowRight, Shield } from 'lucide-react';
+import { Github, Linkedin, Instagram, ArrowRight, ShieldCheck, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { preloadPage } from '../App';
 import { useImagePreview } from '../context/ImagePreviewContext';
@@ -9,49 +9,16 @@ import './Home.css';
 // All navigable page routes — prefetch their JS chunks during idle time
 const ALL_ROUTES = ['/about', '/projects', '/experience', '/achievements', '/hack', '/contact'];
 
-const subtitles = ['Software Engineer', 'Cybersecurity Enthusiast', 'Problem Solver', 'Tech Leader', 'Innovation'];
-
 const socials = [
-  { icon: <Github size={20} />, label: 'GitHub', href: 'https://github.com/praisi-tech', id: 'social-github' },
-  { icon: <Linkedin size={20} />, label: 'LinkedIn', href: 'https://www.linkedin.com/in/praisiliapandoh/', id: 'social-linkedin' },
-  { icon: <Instagram size={20} />, label: 'Instagram', href: 'https://www.instagram.com/thruhlens_', id: 'social-instagram' },
+  { icon: <Github size={16} />, label: 'GitHub', href: 'https://github.com/praisi-tech', id: 'social-github' },
+  { icon: <Linkedin size={16} />, label: 'LinkedIn', href: 'https://www.linkedin.com/in/praisiliapandoh/', id: 'social-linkedin' },
+  { icon: <Instagram size={16} />, label: 'Instagram', href: 'https://www.instagram.com/thruhlens_', id: 'social-instagram' },
 ];
 
+const STAR = 'M12 0 C12.6 7.2 16.8 11.4 24 12 C16.8 12.6 12.6 16.8 12 24 C11.4 16.8 7.2 12.6 0 12 C7.2 11.4 11.4 7.2 12 0Z';
 
 export default function Home() {
-  const [subtitleIdx, setSubtitleIdx] = useState(0);
-  const [displayed, setDisplayed] = useState('');
-  const [typing, setTyping] = useState(true);
   const { openPreview } = useImagePreview();
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 600);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  useEffect(() => {
-    if (isMobile) return;
-    const current = subtitles[subtitleIdx];
-    let timeout;
-    if (typing) {
-      if (displayed.length < current.length) {
-        timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 75);
-      } else {
-        timeout = setTimeout(() => setTyping(false), 2000);
-      }
-    } else {
-      if (displayed.length > 0) {
-        timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 40);
-      } else {
-        setSubtitleIdx(i => (i + 1) % subtitles.length);
-        setTyping(true);
-      }
-    }
-    return () => clearTimeout(timeout);
-  }, [displayed, typing, subtitleIdx, isMobile]);
 
   // Preload all other page chunks after a delay so it does not compete with home page assets
   useEffect(() => {
@@ -68,61 +35,67 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
-  };
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
-  };
+  const rise = (delay = 0) => ({
+    initial: { opacity: 0, y: 14 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.55, delay, ease: [0.2, 0, 0, 1] },
+  });
 
   return (
     <div className="home">
-      {/* Hero */}
       <section className="hero">
-        {/* Background layers */}
-        <div className="hero-bg">
-          <div className="hero-grid" />
-          <div className="hero-noise" />
-          <div className="hero-gradient-blur hero-gradient-blur--1" />
-          <div className="hero-gradient-blur hero-gradient-blur--2" />
+        {/* Rotating text badge */}
+        <div className="hero__seal" aria-hidden="true">
+          <svg viewBox="0 0 120 120" className="hero__seal-ring animate-spin-slow">
+            <defs>
+              <path id="seal-circle" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0" />
+            </defs>
+            <text>
+              <textPath href="#seal-circle" textLength="272" lengthAdjust="spacing">
+                A MORE SECURE WEB · EVERY DAY ·
+              </textPath>
+            </text>
+          </svg>
+          <svg viewBox="0 0 24 24" className="hero__seal-star"><path d={STAR} /></svg>
         </div>
 
-        <div className="container hero__content">
-          {/* Left: Identity */}
-          <motion.div
-            className="hero__left"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <motion.div variants={itemVariants} className="hero__badge">
-              <span className="hero__badge-dot" />
-              Available for opportunities
-            </motion.div>
+        <div className="container hero__top">
+          <motion.h1 className="hero__title" {...rise(0)}>
+            Give your system<br />
+            some <em>secure space.</em>
+          </motion.h1>
 
-            <motion.div variants={itemVariants} className="hero__intro">
-              Praisilia Anastasya
-            </motion.div>
+          <motion.p className="hero__desc" {...rise(0.1)}>
+            Turn business into digital solutions. Praisilia Anastasya builds
+            secure, deployed software for real-world problems.
+          </motion.p>
 
-            <motion.h1 variants={itemVariants} className="hero__title heading-display">
-              Give your system<br />
-              some <span className="gradient-text">secure space</span>
-            </motion.h1>
+          <motion.div className="hero__ctas" {...rise(0.2)}>
+            <Link to="/projects" id="cta-projects" className="hero__btn hero__btn--solid">
+              View projects <ArrowRight size={16} />
+            </Link>
+            <Link to="/hack" id="cta-hack" className="hero__btn hero__btn--outline">
+              <span className="hero__btn-icon"><Shield size={12} /></span>
+              Hack the portfolio
+            </Link>
+          </motion.div>
+        </div>
 
-            <motion.div variants={itemVariants} className="hero__subtitle">
-              <span className="hero__subtitle-text">{displayed}</span>
-              <span className={`hero__cursor${!typing && displayed.length === subtitles[subtitleIdx].length ? ' animate-blink' : ''}`}>|</span>
-            </motion.div>
+        {/* Stage: portrait + floating cards */}
+        <motion.div className="container hero__stage" {...rise(0.3)}>
+          <svg className="hero__lines" viewBox="0 0 1200 560" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M120 215 C 120 400, 260 440, 390 425" />
+            <path d="M1080 280 C 1080 400, 960 420, 830 405" />
+          </svg>
 
-            <motion.p variants={itemVariants} className="hero__desc">
-              I build secure, deployed software and explore the intersections of
-              software engineering and cybersecurity.
-            </motion.p>
+          <div className="hero__card hero__card--left">
+            <span className="hero__card-icon"><ShieldCheck size={16} /></span>
+            <h2>Secure by design.</h2>
+            <p>Software that holds up under pressure.</p>
+          </div>
 
-            {/* Social links */}
-            <motion.div variants={itemVariants} className="hero__socials">
+          <div className="hero__card hero__card--right">
+            <div className="hero__socials">
               {socials.map(s => (
                 <a
                   key={s.id}
@@ -130,52 +103,41 @@ export default function Home() {
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hero__social-btn"
+                  className="hero__social"
                   aria-label={s.label}
                 >
                   {s.icon}
                 </a>
               ))}
-            </motion.div>
-
-            {/* CTA */}
-            <motion.div variants={itemVariants} className="hero__ctas">
-              <Link to="/projects" id="cta-projects" className="btn btn-primary btn-lg">
-                View Projects <ArrowRight size={18} />
-              </Link>
-              <Link to="/hack" id="cta-hack" className="btn btn-secondary btn-lg">
-                <Shield size={16} /> Hack The Portfolio
-              </Link>
-            </motion.div>
-          </motion.div>
-
-          {/* Right: Portrait */}
-          <motion.div
-            className="hero__right"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          >
-            <div className="hero__portrait-wrapper animate-float">
-              <div className="hero__portrait-ring hero__portrait-ring--outer animate-spin-slow" />
-              <div className="hero__portrait-ring hero__portrait-ring--inner" />
-              <div
-                className="hero__portrait"
-                style={{ cursor: 'zoom-in' }}
-                onClick={() => openPreview('/profile/Praisilia-home.webp', 'Praisilia Anastasya', 'Praisilia Anastasya', 'Software Engineer & Cybersecurity Enthusiast')}
-              >
-                <img
-                  src="/profile/Praisilia-home.webp"
-                  alt="Praisilia Anastasya"
-                  fetchpriority="high"
-                  loading="eager"
-                  decoding="async"
-                />
-              </div>
-
             </div>
-          </motion.div>
-        </div>
+            <h2>Let’s build together.</h2>
+            <p>Open to internships and collaborations.</p>
+          </div>
+
+          <div
+            className="hero__portrait"
+            style={{ cursor: 'zoom-in' }}
+            onClick={() => openPreview('/profile/Praisilia-home.webp', 'Praisilia Anastasya', 'Praisilia Anastasya', 'Software Engineer & Cybersecurity Enthusiast')}
+          >
+            <img
+              src="/profile/Praisilia-home.webp"
+              alt="Praisilia Anastasya"
+              fetchpriority="high"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+
+          <div className="hero__note hero__note--left">
+            <span className="hero__rule" />
+            <p>Software engineer &amp; cybersecurity enthusiast at President University, Indonesia.</p>
+          </div>
+
+          <div className="hero__note hero__note--right">
+            <svg viewBox="0 0 24 24" className="hero__note-star"><path d={STAR} /></svg>
+            <p>Build secure.<br />Ship clear.</p>
+          </div>
+        </motion.div>
       </section>
     </div>
   );

@@ -12,25 +12,19 @@
   flex-shrink: 0;
   transition: transform var(--transition);
 }
-.about__portrait-wrap:hover {
-  transform: translateY(-4px);
-}
+
 .about__portrait-ring {
   position: absolute;
-  inset: -12px;
-  border-radius: 50%;
-  border: 2px dashed color-mix(in srgb, var(--accent-emerald) 35%, transparent);
-  animation: spin-slow 18s linear infinite;
+  display: none;
 }
 .about__portrait {
   width: 280px;
   height: 340px;
-  border-radius: 24px;
+  border-radius: 140px 140px var(--radius-lg) var(--radius-lg);
   object-fit: cover;
   object-position: top center;
   display: block;
-  box-shadow: var(--shadow-lg), var(--shadow-glow);
-  border: 2px solid var(--border-strong);
+  border: 1px solid var(--border-color);
 }
 .about__portrait-badge {
   position: absolute;
@@ -48,16 +42,12 @@
   font-weight: 600;
   color: var(--accent-emerald);
   white-space: nowrap;
-  box-shadow: var(--shadow-md);
-  backdrop-filter: blur(12px);
 }
 .about__badge-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: var(--accent-emerald);
-  box-shadow: 0 0 6px var(--accent-emerald);
-  animation: pulse-glow 2s infinite;
   flex-shrink: 0;
 }
 
@@ -115,8 +105,11 @@
   cursor: default;
 }
 .about__stat-value {
-  font-size: 2.2rem;
-  font-weight: 900;
+  font-family: var(--font-display);
+  font-style: normal;
+  color: var(--text-primary);
+  font-size: 3rem;
+  font-weight: 400;
   line-height: 1;
 }
 .about__stat-label {
@@ -244,59 +237,22 @@
   transition: color 0.2s ease;
 }
 
-/* Category-specific icon colors */
-.skill-tag--emerald .skill-tag__icon svg {
-  color: var(--accent-emerald);
-}
-
-.skill-tag--crimson .skill-tag__icon svg {
-  color: #E25B8B;
-}
-
-[data-theme="dark"] .skill-tag--crimson .skill-tag__icon svg {
-  color: #FF7DA8;
-}
-
-.skill-tag--blue .skill-tag__icon svg {
-  color: var(--accent-blue);
-}
-
+/* Category icons: all use the theme accent */
+.skill-tag--emerald .skill-tag__icon svg,
+.skill-tag--crimson .skill-tag__icon svg,
+.skill-tag--blue .skill-tag__icon svg,
 .skill-tag--purple .skill-tag__icon svg {
-  color: #A855F7;
+  color: var(--accent-emerald);
 }
 
 .skill-tag:hover .skill-tag__icon svg {
   color: currentColor;
 }
 
-/* Category Accent Theme Colors */
-
-/* 1. Software Engineering (Emerald) */
-.skills-cat-header--emerald .skills-cat-icon {
+.skills-cat-header .skills-cat-icon {
   background: color-mix(in srgb, var(--accent-emerald) 12%, transparent);
   color: var(--accent-emerald);
   border: 1px solid color-mix(in srgb, var(--accent-emerald) 20%, transparent);
-}
-
-/* 2. Cybersecurity (Crimson) */
-.skills-cat-header--crimson .skills-cat-icon {
-  background: rgba(226, 91, 139, 0.12);
-  color: #E25B8B;
-  border: 1px solid rgba(226, 91, 139, 0.2);
-}
-
-/* 3. Network & System Infrastructure (Blue) */
-.skills-cat-header--blue .skills-cat-icon {
-  background: color-mix(in srgb, var(--accent-blue) 12%, transparent);
-  color: var(--accent-blue);
-  border: 1px solid color-mix(in srgb, var(--accent-blue) 20%, transparent);
-}
-
-/* 4. Leadership & Communication (Purple) */
-.skills-cat-header--purple .skills-cat-icon {
-  background: rgba(168, 85, 247, 0.12);
-  color: #A855F7;
-  border: 1px solid rgba(168, 85, 247, 0.2);
 }
 
 /* Responsive Grid Rules */
@@ -360,7 +316,7 @@
     margin-bottom: 48px;
   }
   .about__stat { padding: 18px 12px; }
-  .about__stat-value { font-size: 1.8rem; }
+  .about__stat-value { font-size: 2.4rem; }
 
   /* Marquee smaller */
   .marquee-item {

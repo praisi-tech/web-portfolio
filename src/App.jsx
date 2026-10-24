@@ -6,7 +6,6 @@ import { CTFProvider } from './context/CTFContext';
 import { ImagePreviewProvider } from './context/ImagePreviewContext';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
-import ParticleBackground from './components/ParticleBackground';
 
 // ─── Per-page lazy imports (Vite creates separate chunks per page) ───────────
 // Home is eager — it's the LCP page, must be instant
@@ -103,6 +102,11 @@ const PAGE_METADATA = {
 function AppRoutes() {
   const location = useLocation();
 
+  // Always start a new page at the top
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [location.pathname]);
+
   useEffect(() => {
     const meta = PAGE_METADATA[location.pathname] || PAGE_METADATA['/'];
     document.title = meta.title;
@@ -162,7 +166,6 @@ export default function App() {
       <CTFProvider>
         <ImagePreviewProvider>
           <BrowserRouter>
-            <ParticleBackground />
             <Navbar />
             <ErrorBoundary>
               <AppRoutes />

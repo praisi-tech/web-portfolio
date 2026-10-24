@@ -20,39 +20,9 @@
   pointer-events: none;
 }
 
-.notfound__blur-1 {
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(226,91,139,0.18) 0%, transparent 70%);
-  filter: blur(80px);
-  top: -100px;
-  right: -100px;
-}
-
-.notfound__blur-2 {
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
-  filter: blur(80px);
-  bottom: -80px;
-  left: -80px;
-}
-
 .notfound__blur-1,
 .notfound__blur-2 {
-  transform: translate3d(0, 0, 0);
-  will-change: transform;
-}
-
-[data-theme="dark"] .notfound__blur-1 {
-  background: radial-gradient(circle, rgba(255,125,168,0.15) 0%, transparent 70%);
-}
-[data-theme="dark"] .notfound__blur-2 {
-  background: radial-gradient(circle, rgba(96,165,250,0.12) 0%, transparent 70%);
+  display: none;
 }
 
 /* Content */
@@ -66,10 +36,12 @@
 
 /* Glitch 404 number */
 .notfound__code {
-  font-size: clamp(6rem, 20vw, 12rem);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.04em;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(7rem, 22vw, 14rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
   background: var(--gradient-text);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -95,7 +67,7 @@
   clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
   transform: translateX(-3px);
   opacity: 0.7;
-  background: linear-gradient(135deg, #E25B8B, #3B82F6);
+  background: var(--accent-emerald);
   -webkit-background-clip: text;
   background-clip: text;
 }
@@ -105,7 +77,7 @@
   clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
   transform: translateX(3px);
   opacity: 0.7;
-  background: linear-gradient(135deg, #3B82F6, #E25B8B);
+  background: var(--accent-blue);
   -webkit-background-clip: text;
   background-clip: text;
 }
@@ -152,8 +124,10 @@
 
 /* Title & description */
 .notfound__title {
-  font-size: clamp(1.5rem, 4vw, 2.2rem);
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
   color: var(--text-primary);
   margin-bottom: 12px;
   line-height: 1.2;
