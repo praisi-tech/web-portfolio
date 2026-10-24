@@ -61,13 +61,14 @@ export default function Home() {
 
         <div className="container hero__top">
           <motion.h1 className="hero__title" {...rise(0)}>
-            Give your system<br />
-            some <em>secure space.</em>
+            Give your business<br />
+            a <em>secure digital space.</em>
           </motion.h1>
 
           <motion.p className="hero__desc" {...rise(0.1)}>
-            Turn business into digital solutions. Praisilia Anastasya builds
-            secure, deployed software for real-world problems.
+            I’m Praisilia Anastasya, a software engineer who turns business
+            needs into secure, deployed digital solutions — from first idea
+            to live product.
           </motion.p>
 
           <motion.div className="hero__ctas" {...rise(0.2)}>
