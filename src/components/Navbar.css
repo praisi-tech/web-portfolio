@@ -176,16 +176,9 @@
 }
 
 
-/* Active indicator pill behind icon */
-.mobile-tab--active .mobile-tab__icon::before {
-  content: '';
-  position: absolute;
-  inset: -4px -10px;
-  border-radius: var(--radius-full);
-  background: color-mix(in srgb, var(--accent-emerald) 14%, transparent);
-}
-.mobile-tab--hack.mobile-tab--active .mobile-tab__icon::before {
-  background: color-mix(in srgb, var(--accent-blue) 14%, transparent);
+/* Active tab: the icon itself is filled with the accent color, no pill behind it */
+.mobile-tab--active .mobile-tab__icon > svg {
+  fill: currentColor;
 }
 
 .mobile-tab__label {
